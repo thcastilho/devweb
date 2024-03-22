@@ -1,0 +1,50 @@
+@startuml
+class Usuario {
+  - Long id
+  - String email
+  - String password
+  - String userName
+  - String fotoPerfil
+  + Usuario()
+}
+
+class Post {
+  - Long id
+  - String albumTitle
+  - String artist
+  - List<String> genres
+  - LocalDate releaseDate
+  
+  - String description
+  - Float avgRating
+  - Timestamp publishDate
+  - String imagemAlbum
+  + Post()
+}
+
+class Comentario {
+  - Long id
+  - String text
+  - Timestamp publishDate
+  + Comentario()
+}
+
+class Avaliação {
+  - int numStars
+  - int numLikes
+  + Avaliação()
+}
+
+class Resposta {
+  - Long IdUsuario
+  + Comentario()
+}
+
+Comentario <|-- Avaliação
+Comentario <|-- Resposta
+Usuario "1" <-right- "*" Post : Publica
+Usuario "1" <-- "*" Avaliação : Realiza
+Usuario "1" <-- "0..*" Resposta : Comenta
+Post "1" -- Avaliação : Recebe
+Avaliação "1" *-- "0..*" Resposta
+@enduml
