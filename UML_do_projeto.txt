@@ -14,7 +14,6 @@ class Post {
   - String artist
   - List<String> genres
   - LocalDate releaseDate
-  
   - String description
   - Float avgRating
   - Timestamp publishDate
@@ -40,11 +39,25 @@ class Resposta {
   + Comentario()
 }
 
+class Musica {
+  - String Name
+  - int Duration
+  - Float avgRating
+  + Musica()
+}
+
+'''Herança
 Comentario <|-- Avaliação
 Comentario <|-- Resposta
-Usuario "1" <-right- "*" Post : Publica
-Usuario "1" <-- "*" Avaliação : Realiza
-Usuario "1" <-- "0..*" Resposta : Comenta
-Post "1" -- Avaliação : Recebe
-Avaliação "1" *-- "0..*" Resposta
+
+Usuario "1" <-left- "*" Post : Publica
+Usuario "1" <-up- "*" Avaliação : Realiza
+Usuario "1" <-up- "0..*" Resposta : Comenta
+
+Post "1" -- "*" Musica : Tem
+Post "1" -up- "*" Avaliação : Recebe
+
+Musica "1" -- "*" Avaliação : Recebe
+Avaliação "1" *-right- "0..*" Resposta
+
 @enduml
