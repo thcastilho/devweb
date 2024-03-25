@@ -10,35 +10,50 @@ class Usuario {
 
 class Post {
   - Long id
-  - String albumTitle
+  - String name
   - String artist
   - List<String> genres
   - LocalDate releaseDate
   - String description
   - Float avgRating
   - Timestamp publishDate
-  - String imagemAlbum
+  - String image
+  - Duration duracao
+  - Categoria categoria
   + Post()
 }
 
-class Comentario {
+class Avaliacao {
   - Long id
   - String text
   - Timestamp publishDate
-  + Comentario()
-}
-
-class Avaliação {
   - int numStars
   - int numLikes
-  + Avaliação()
+  + Avaliacao()
 }
 
 class Resposta {
-  - Long IdUsuario
-  + Comentario()
+  - Long id
+  - String text
+  + Resposta()
 }
 
+<<<<<<< HEAD
+enum Categoria {
+  MUSICA
+  ALBUM
+}
+
+Usuario "1" <-left- "*" Post : Publica
+Usuario "1" <-up- "*" Avaliacao : Realiza
+Usuario "1" <-up- "0..*" Resposta : Comenta
+
+Post "1" -up- "*" Avaliacao : Recebe
+
+Avaliacao "1" *-right- "0..*" Resposta : Possui
+
+@enduml
+=======
 class Musica {
   - String Name
   - int Duration
@@ -61,3 +76,4 @@ Musica "1" -- "*" Avaliação : Recebe
 Avaliação "1" *-right- "0..*" Resposta
 
 @enduml
+>>>>>>> 95de5f01410062aafa1b2c2dbbad124128c222f9

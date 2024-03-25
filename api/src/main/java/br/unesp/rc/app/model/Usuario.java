@@ -3,19 +3,25 @@ package br.unesp.rc.app.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
+@Table(name = "usuarios")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Usuario implements Serializable {
@@ -23,11 +29,44 @@ public class Usuario implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
+    @Column(name = "email", nullable = false, unique = true, length = 100)
     private String email;
-    private String userName;
+
+    @Column(name = "username", nullable = false, unique = true, length = 20)
+    private String username;
+
+    @Column(name = "password", nullable = false, length = 200)
     private String password;
+
+    @Column(name = "foto_perfil")
     private String fotoPerfil;
 
-    @OneToMany(mappedBy = "usuario", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<Telefone> telefones = new ArrayList<>();
+    @OneToMany(mappedBy = "usuarioResposta", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Resposta> respostas = new ArrayList<>();
+
+    @OneToMany(mappedBy = "usuarioPost", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Resposta> posts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "usuarioAvaliacao", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Resposta> avaliacoes = new ArrayList<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+        Usuario usuario = (Usuario) o;
+        return Objects.equals(id, usuario.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                "}";
+    }
 }
