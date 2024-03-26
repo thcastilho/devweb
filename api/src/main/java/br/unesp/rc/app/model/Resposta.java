@@ -46,7 +46,7 @@ public class Resposta {
     @org.hibernate.annotations.ForeignKey(name = "avaliacao_id")    
     @ManyToOne
     @JsonIgnore
-    private Usuario avaliacaoResposta;
+    private Avaliacao avaliacaoResposta;
 
     @Override
     public int hashCode() {

@@ -37,18 +37,19 @@ public class Usuario implements Serializable {
 
     @Column(name = "password", nullable = false, length = 200)
     private String password;
-
-    @Column(name = "foto_perfil")
+    
+    @Column(name = "foto_perfil", nullable = true, length = 30)
     private String fotoPerfil;
 
     @OneToMany(mappedBy = "usuarioResposta", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Resposta> respostas = new ArrayList<>();
 
+    //Mudar o tipo das listas 
     @OneToMany(mappedBy = "usuarioPost", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<Resposta> posts = new ArrayList<>();
+    private List<Post> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "usuarioAvaliacao", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<Resposta> avaliacoes = new ArrayList<>();
+    private List<Avaliacao> avaliacoes = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

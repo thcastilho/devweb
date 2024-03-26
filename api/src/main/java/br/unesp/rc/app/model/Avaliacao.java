@@ -35,7 +35,7 @@ public class Avaliacao {
     @Column(name = "text", nullable = false)
     private String text;
 
-    @Column(name = "publish_date")
+    @Column(name = "publish_date", nullable = false)
     private Timestamp publishDate;
 
     @Column(name = "num_stars")
