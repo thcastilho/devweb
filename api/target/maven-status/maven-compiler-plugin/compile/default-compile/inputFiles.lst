@@ -1,8 +1,19 @@
-/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/devweb/api/src/main/java/br/unesp/rc/app/controller/IndexController.java
-/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/devweb/api/src/main/java/br/unesp/rc/app/model/Telefone.java
-/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/devweb/api/src/main/java/br/unesp/rc/app/api/ApiApplication.java
-/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/devweb/api/src/main/java/br/unesp/rc/app/repository/UsuarioRepository.java
-/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/devweb/api/src/main/java/br/unesp/rc/app/model/Usuario.java
-/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/devweb/api/src/main/java/br/unesp/rc/app/model/Resposta.java
-/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/devweb/api/src/main/java/br/unesp/rc/app/model/Avaliacao.java
-/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/devweb/api/src/main/java/br/unesp/rc/app/model/Post.java
+/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/repository/ProdutoRepository.java
+/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/model/Resposta.java
+/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/controller/AuthenticationController.java
+/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/model/Avaliacao.java
+/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/model/Produto.java
+/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/model/Role.java
+/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/model/Usuario.java
+/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/controller/IndexController.java
+/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/api/ApiApplication.java
+/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/security/SecurityConfiguration.java
+/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/controller/ProdutoController.java
+/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/model/LoginResponseDTO.java
+/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/security/TokenService.java
+/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/model/Post.java
+/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/security/SecurityFilter.java
+/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/service/AuthorizationService.java
+/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/repository/UsuarioRepository.java
+/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/model/AuthenticationDTO.java
+/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/model/RegisterDTO.java

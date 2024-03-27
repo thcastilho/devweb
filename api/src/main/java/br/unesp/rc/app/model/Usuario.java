@@ -1,9 +1,14 @@
 package br.unesp.rc.app.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -14,17 +19,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Getter
-@Setter
 @Table(name = "usuarios")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Usuario implements Serializable {
+public class Usuario implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -43,13 +44,21 @@ public class Usuario implements Serializable {
 
     @OneToMany(mappedBy = "usuarioResposta", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Resposta> respostas = new ArrayList<>();
-
+    
     //Mudar o tipo das listas 
     @OneToMany(mappedBy = "usuarioPost", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Post> posts = new ArrayList<>();
-
+    
     @OneToMany(mappedBy = "usuarioAvaliacao", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Avaliacao> avaliacoes = new ArrayList<>();
+    
+    private Role role;
+    
+    public Usuario(String username, String password, Role role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -70,4 +79,54 @@ public class Usuario implements Serializable {
                 "id=" + id +
                 "}";
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // TODO Auto-generated method stub
+        if(this.role == Role.ADMIN) {
+            return List.of(
+                new SimpleGrantedAuthority("ROLE_ADMIN"),
+                new SimpleGrantedAuthority("ROLE_USER")
+            );
+        } else {
+            return List.of(
+                new SimpleGrantedAuthority("ROLE_USER")
+            );
+        }
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        // TODO Auto-generated method stub
+        return true;    
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        // TODO Auto-generated method stub
+        return true;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return this.getUsername();
+    }
+
 }
