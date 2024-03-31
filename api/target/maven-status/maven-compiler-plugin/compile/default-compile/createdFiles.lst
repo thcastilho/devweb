@@ -1,0 +1,5 @@
+br/unesp/rc/app/controller/RespostaController.class
+br/unesp/rc/app/controller/PostController.class
+br/unesp/rc/app/controller/AvaliacaoController.class
+br/unesp/rc/app/controller/UsuarioController.class
+br/unesp/rc/app/repository/AvaliacaoRepository.class

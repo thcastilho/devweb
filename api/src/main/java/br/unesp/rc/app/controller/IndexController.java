@@ -86,7 +86,7 @@ public class IndexController {
         return new ResponseEntity("Relatorio do usuario " + id + " para os " + dias + " dias anteriores.", HttpStatus.OK);
     }
     
-    @PostMapping(value = "/", produces = "application/json")
+    @PostMapping(value = "/", consumes = "application/json;charset=UTF-8", produces = "application/json")
     public ResponseEntity<Usuario> createUser(@RequestBody Usuario usuario) {
         Usuario usuarioSalvo = usuarioRepository.save(usuario);
 
