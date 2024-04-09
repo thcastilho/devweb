@@ -22,13 +22,7 @@ public class AvaliacaoController {
     @Autowired
     private AvaliacaoRepository avaliacaoRepository;
     
-    //Teste pra ver se a controller funciona
-    @GetMapping(value="/")
-    public String teste() {
-        return "Ok";
-    }
-    
-    //Mostra avaliação por Id
+    // Mostra avaliação por Id
     @GetMapping(value="/{id}", produces="application/json")
     public ResponseEntity<Avaliacao> getAvaliacaoById(@PathVariable("id") Long id) {
         try {
@@ -39,7 +33,7 @@ public class AvaliacaoController {
         }
     }
     
-    //Mostra todas avaliações
+    // Mostra todas avaliações
     @GetMapping(value="/", produces="application/json")
     public ResponseEntity<List<Avaliacao>> getAllAvaliacoes() {
         List<Avaliacao> l = (List<Avaliacao>) avaliacaoRepository.findAll();
@@ -47,7 +41,7 @@ public class AvaliacaoController {
         return new ResponseEntity<>(l, HttpStatus.OK);
     } 
 
-    //Cria nova avaliação
+    // Cria nova avaliação
     @PostMapping(value = "/", produces = "application/json")
     public ResponseEntity<Avaliacao> createAvaliacao(@RequestBody Avaliacao aval) {
         Avaliacao avaliacaoSalva = avaliacaoRepository.save(aval);
@@ -55,7 +49,7 @@ public class AvaliacaoController {
         return new ResponseEntity<>(avaliacaoSalva, HttpStatus.CREATED);
     }
 
-    //Atualiza avaliação
+    // Atualiza avaliação
     @PutMapping(value = "/", produces = "application/json")
     public ResponseEntity<Avaliacao> updateAvaliacao(@RequestBody Avaliacao aval) {
         Avaliacao avaliacaoSalva = avaliacaoRepository.save(aval);
@@ -63,8 +57,8 @@ public class AvaliacaoController {
         return new ResponseEntity<>(avaliacaoSalva, HttpStatus.OK);
     }
     
-    //Deleta avaliação
-    // ISSO NAO EH RESTFUL, pq precisa retornar uma resposta no formato json
+    // Deleta avaliação
+    // Não é RESTful, porque precisa retornar uma usuario no formato json
     @DeleteMapping(value = "/{id}", produces = "application/text")
     public String deleteAvaliacao(@PathVariable("id") Long id) {
         avaliacaoRepository.deleteById(id);

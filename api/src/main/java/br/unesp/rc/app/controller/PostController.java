@@ -21,14 +21,8 @@ public class PostController {
 
     @Autowired
     private PostRepository postRepository;
-    
-    //Teste pra ver se a controller funciona
-    @GetMapping(value="/")
-    public String teste() {
-        return "Ok";
-    }
-    
-    //Mostra post por Id
+        
+    // Mostra post por Id
     @GetMapping(value="/{id}", produces="application/json")
     public ResponseEntity<Post> getPostById(@PathVariable("id") Long id) {
         try {
@@ -39,7 +33,7 @@ public class PostController {
         }
     }
     
-    //Mostra todos os posts
+    // Mostra todos os posts
     @GetMapping(value="/", produces="application/json")
     public ResponseEntity<List<Post>> getAllPosts() {
         List<Post> l = (List<Post>) postRepository.findAll();
@@ -47,7 +41,7 @@ public class PostController {
         return new ResponseEntity<>(l, HttpStatus.OK);
     } 
 
-    //Cria novo post
+    // Cria novo post
     @PostMapping(value = "/", produces = "application/json")
     public ResponseEntity<Post> createPost(@RequestBody Post post) {
         Post postSalvo = postRepository.save(post);
@@ -55,7 +49,7 @@ public class PostController {
         return new ResponseEntity<>(postSalvo, HttpStatus.CREATED);
     }
 
-    //Atualiza post
+    // Atualiza post
     @PutMapping(value = "/", produces = "application/json")
     public ResponseEntity<Post> updatePost(@RequestBody Post post) {
         Post postSalvo = postRepository.save(post);
@@ -63,8 +57,8 @@ public class PostController {
         return new ResponseEntity<>(postSalvo, HttpStatus.OK);
     }
     
-    //Deleta post
-    // ISSO NAO EH RESTFUL, pq precisa retornar uma resposta no formato json
+    // Deleta post
+    // Não é RESTful, porque precisa retornar uma usuario no formato json
     @DeleteMapping(value = "/{id}", produces = "application/text")
     public String deletePost(@PathVariable("id") Long id) {
         postRepository.deleteById(id);

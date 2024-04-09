@@ -24,21 +24,23 @@ class Post {
 }
 
 class Avaliacao {
-  - Long id
-  - String text
-  - Timestamp publishDate
   - int numStars
-  - int numLikes
   + Avaliacao()
 }
 
 class Resposta {
-  - Long id
-  - String text
+  - Long idUsuario
   + Resposta()
 }
 
-<<<<<<< HEAD
+class Comentario {
+  - Long id
+  - String text
+  - int numLikes
+  - Timestamp publishDate
+  + Comentario()
+}
+
 enum Categoria {
   MUSICA
   ALBUM
@@ -50,30 +52,9 @@ Usuario "1" <-up- "0..*" Resposta : Comenta
 
 Post "1" -up- "*" Avaliacao : Recebe
 
+Comentario <|-down- Avaliacao
+Comentario <|-down- Resposta
+
 Avaliacao "1" *-right- "0..*" Resposta : Possui
 
 @enduml
-=======
-class Musica {
-  - String Name
-  - int Duration
-  - Float avgRating
-  + Musica()
-}
-
-'''Herança
-Comentario <|-- Avaliação
-Comentario <|-- Resposta
-
-Usuario "1" <-left- "*" Post : Publica
-Usuario "1" <-up- "*" Avaliação : Realiza
-Usuario "1" <-up- "0..*" Resposta : Comenta
-
-Post "1" -- "*" Musica : Tem
-Post "1" -up- "*" Avaliação : Recebe
-
-Musica "1" -- "*" Avaliação : Recebe
-Avaliação "1" *-right- "0..*" Resposta
-
-@enduml
->>>>>>> 95de5f01410062aafa1b2c2dbbad124128c222f9
