@@ -1,7 +1,10 @@
 package br.unesp.rc.app.controller;
 
 import br.unesp.rc.app.model.Genero;
+import br.unesp.rc.app.model.Usuario;
 import br.unesp.rc.app.repository.GeneroRepository;
+import br.unesp.rc.app.repository.UsuarioRepository;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +24,9 @@ public class GeneroController {
 
     @Autowired
     private GeneroRepository generoRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
     
     // Mostra genero por Id
     @GetMapping(value="/{id}", produces="application/json")
@@ -42,8 +48,10 @@ public class GeneroController {
     } 
 
     // Cria novo genero
-    @PostMapping(value = "/", produces = "application/json")
-    public ResponseEntity<Genero> createGenero(@RequestBody Genero genero) {
+    @PostMapping(value = "/{idUsuario}", produces = "application/json")
+    public ResponseEntity<Genero> createGenero(@PathVariable Long idUsuario, @RequestBody Genero genero) {
+        Usuario usuario = usuarioRepository.findById(idUsuario).get();
+        genero.setUsuarioGenero(usuario);
         Genero generoSalvo = generoRepository.save(genero);
 
         return new ResponseEntity<>(generoSalvo, HttpStatus.CREATED);
@@ -54,6 +62,7 @@ public class GeneroController {
     public ResponseEntity<Genero> updateGenero(@PathVariable Long id, @RequestBody Genero genero) {
         try {
             Genero generoSalva = generoRepository.findById(id).get();
+            genero.setUsuarioGenero(generoRepository.findById(id).get().getUsuarioGenero());
             genero.setId(id);
             generoSalva = generoRepository.save(genero);
             return new ResponseEntity<>(generoSalva, HttpStatus.OK);

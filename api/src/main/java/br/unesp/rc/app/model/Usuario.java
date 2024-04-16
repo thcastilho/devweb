@@ -43,7 +43,10 @@ public class Usuario implements UserDetails{
     private List<Post> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "usuarioAvaliacao", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<Avaliacao> avaliacoes = new ArrayList<>();    
+    private List<Avaliacao> avaliacoes = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "usuarioGenero", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Genero> generosCriados = new ArrayList<>();
 
     public Usuario(String login, String senha, UserRole role){
         this.login = login;
@@ -180,4 +183,11 @@ public class Usuario implements UserDetails{
         this.avaliacoes = avaliacoes;
     }
     
+    public List<Genero> getGenerosCriados() {
+        return generosCriados;
+    }
+
+    public void setGenerosCriados(List<Genero> generosCriados) {
+        this.generosCriados = generosCriados;
+    }
 }

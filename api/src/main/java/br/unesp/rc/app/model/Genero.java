@@ -6,12 +6,19 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
+@Getter
+@Setter
 @Table(name = "generos")
 public class Genero {
     @Id
@@ -20,6 +27,11 @@ public class Genero {
     
     @Column(name = "name", nullable = false)
     private String name;
+
+    @org.hibernate.annotations.ForeignKey(name = "usuario_genero_id")
+    @ManyToOne
+    @JsonIgnore
+    private Usuario usuarioGenero;
     
     @ManyToMany(mappedBy = "generos")
     private List<Post> posts = new ArrayList<>();
@@ -33,28 +45,4 @@ public class Genero {
     }
 
     //listarGeneros
-    
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public List<Post> getPosts() {
-        return posts;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setPosts(List<Post> posts) {
-        this.posts = posts;
-    }
 }

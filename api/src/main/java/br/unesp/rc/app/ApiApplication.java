@@ -26,5 +26,7 @@ public class ApiApplication implements WebMvcConfigurer {
 		SpringApplication.run(ApiApplication.class, args);
                 System.out.println("Aplicação rodando");
 	}
+	
+
 }
 

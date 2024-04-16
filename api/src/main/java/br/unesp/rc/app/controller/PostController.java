@@ -102,7 +102,7 @@ public class PostController {
     }
 
     // Atribui um post a um gênero
-    @PutMapping("{idPost}/genero/{idGenero}")
+    @PutMapping("/{idPost}/genero/{idGenero}")
     public ResponseEntity assignPostToGenre(@PathVariable Long idPost, @PathVariable Long idGenero) {
         try {
             Post post = postRepository.findById(idPost).get();
