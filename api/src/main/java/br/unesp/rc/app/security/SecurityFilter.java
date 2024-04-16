@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import br.unesp.rc.app.repository.UsuarioRepository;
@@ -14,36 +16,48 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+@Component
 public class SecurityFilter extends OncePerRequestFilter {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
     private TokenService tokenService;
-
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+    // Método que será chamado quando o filtro for invocaco
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        var token = this.recoveryToken(request);
-        
-        if(token != null) {
+        // Obtém o token da requisição
+        var token = this.recoverToken(request);
+        if (token != null) {
+
             var login = tokenService.validateToken(token);
-            UserDetails user = usuarioRepository.findByUsername(login);
-    
-            var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            System.out.println(login);
+            UserDetails user = usuarioRepository.findByLogin(login);
+            if (user != null) {
+                System.out.println(user);
+                // Obtém todas as informações usadas pelos restantes dos filtros
+                var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                // Salva no contexto da autenticação esse usuário
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
         }
-        
+        // Caso não encontre token nenhum, não salva nenhum contexto e continua para o próximo filtro
         filterChain.doFilter(request, response);
     }
 
-    private String recoveryToken(HttpServletRequest request) {
+    private String recoverToken(HttpServletRequest request){
         var authHeader = request.getHeader("Authorization");
-        if(authHeader == null) return null;
-
-        var aux = authHeader.replace("Bearer", " ");
-
+        System.out.println("Chegou aki");
+        System.out.println(authHeader);
+        if (authHeader == null){
+        System.out.println("Retornando null");
+         return null;
+        }
+        var aux = authHeader.replace("Bearer ", "");
+        System.out.println(aux);
         return aux;
+
     }
+
 }

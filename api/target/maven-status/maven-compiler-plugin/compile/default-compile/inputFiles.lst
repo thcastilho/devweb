@@ -1,19 +1,26 @@
-/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/repository/ProdutoRepository.java
-/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/model/Resposta.java
-/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/controller/AuthenticationController.java
-/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/model/Avaliacao.java
-/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/model/Produto.java
-/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/model/Role.java
-/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/model/Usuario.java
-/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/controller/IndexController.java
-/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/api/ApiApplication.java
-/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/security/SecurityConfiguration.java
-/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/controller/ProdutoController.java
-/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/model/LoginResponseDTO.java
-/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/security/TokenService.java
-/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/model/Post.java
-/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/security/SecurityFilter.java
-/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/service/AuthorizationService.java
-/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/repository/UsuarioRepository.java
-/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/model/AuthenticationDTO.java
-/home/devweb/Documents/api/src/main/java/br/unesp/rc/app/model/RegisterDTO.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/model/RegisterDTO.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/model/Usuario.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/model/Comentario.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/security/SecurityFilter.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/model/AuthenticationDTO.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/model/LoginResponseDTO.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/model/Avaliacao.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/controller/AuthenticationController.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/repository/ComentarioRepository.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/controller/ComentarioController.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/model/Post.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/controller/UsuarioController.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/model/Resposta.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/repository/GeneroRepository.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/service/AuthorizationService.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/security/TokenService.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/model/Genero.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/repository/UsuarioRepository.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/repository/PostRepository.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/controller/GeneroController.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/security/SecurityConfigurations.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/model/UserRole.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/repository/AvaliacaoRepository.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/repository/RespostaRepository.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/controller/PostController.java
+/home/gil/Documentos/progs/_melhores_2008/Semestre 7/Web/TAPE ARCHIVE/euamodevweb/src/main/java/br/unesp/rc/app/ApiApplication.java

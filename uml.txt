@@ -1,0 +1,74 @@
+@startuml
+class Usuario {
+  - Long id
+  - String email
+  - String password
+  - String userName
+  - String fotoPerfil
+  + Usuario()
+  + fazerPost()
+  + fazerAvaliacao()
+  + darResposta()
+  + criarGenero()
+}
+
+class Post {
+  - Long id
+  - String name
+  - String artist
+  - LocalDate releaseDate
+  - String description
+  - Float avgRating
+  - Timestamp publishDate
+  - String image
+  - Duration duracao
+  - Categoria categoria
+  + Post()
+  + listarPosts()
+  + calcAvgRating()
+}
+
+class Genero {
+  - Long id
+  - String name
+  + Genero()
+  + listarGeneros()
+}
+
+class Avaliacao {
+  - int numStars
+  + Avaliacao()
+}
+
+class Resposta {
+  + Resposta()
+}
+
+class Comentario {
+  - Long id
+  - String text
+  - int numLikes
+  - Timestamp publishDate
+  + Comentario()
+  + calcTotalLikes()
+}
+
+enum Categoria {
+  MUSICA
+  ALBUM
+}
+
+Usuario "1" <-left- "*" Post : Publica
+Usuario "1" <-up- "*" Avaliacao : Realiza
+Usuario "1" <-up- "0..*" Resposta : Comenta
+Usuario "1" <-- "*" Genero : Cria
+
+Post "1" -up- "*" Avaliacao : Recebe
+Post "*" -- "*" Genero : Contém
+
+Comentario <|-down- Avaliacao
+Comentario <|-down- Resposta
+
+Avaliacao "1" *-right- "0..*" Resposta : Possui
+
+@enduml

@@ -1,8 +1,6 @@
 package br.unesp.rc.app.controller;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,40 +19,56 @@ import br.unesp.rc.app.security.TokenService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("auth")
 public class AuthenticationController {
-    
+
     @Autowired
     private AuthenticationManager authenticationManager;
-
     @Autowired
     private UsuarioRepository usuarioRepository;
-
     @Autowired
     private TokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO dto) {
-        var usernamePassword = new UsernamePasswordAuthenticationToken(dto.login(), dto.senha());
-        try {
+    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data){
+     
+        // É uma boa prática armazenarmos as senhas do usuário como HASH no banco de dados. 
+        // Dessa maneira, caso haja um vazamento do BD, as senhas estarão criptografadas
+        // e não poderão ser diretamente acessadas. 
+        var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
+        System.out.println(usernamePassword);
+        try{
             var auth = this.authenticationManager.authenticate(usernamePassword);
-            var token = tokenService.generatedToken((Usuario) auth.getPrincipal());
+            var token = tokenService.generateToken((Usuario)auth.getPrincipal());
+
             return ResponseEntity.ok(new LoginResponseDTO(token));
-        } catch (Exception e) {
-            System.out.println(e);
+        }catch(Exception e){
+            System.out.println("Erro: User does not exists!");
+            // System.out.println(e);
             return ResponseEntity.internalServerError().build();
         }
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid RegisterDTO dto) {
-        if(this.usuarioRepository.findByUsername(dto.login()) != null) return ResponseEntity.badRequest().build();
+    public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
+        // Primeiro verifica se já não existe outro usuário cadastrado com o mesmo login
+        if(this.usuarioRepository.findByLogin(data.login()) != null) {
+            System.out.println("User already exists!\n");
+            return ResponseEntity.badRequest().build();
+        }
 
-        String encryptedPassword = new BCryptPasswordEncoder().encode(dto.senha());
+        // Caso não exista, vamos encriptar a senha para salvar no BD. A senha bruta do usuário 
+        // NÃO DEVE SER INSERIDA NO BD POR MEDIDAS DE SEGURANÇA.
 
-        Usuario usuarioSalvo = new Usuario(dto.login(), encryptedPassword, dto.role());
 
-        this.usuarioRepository.save(usuarioSalvo);
+        String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
+        System.out.println(data.login());
+        System.out.println(encryptedPassword);
+        System.out.println(data.role());
+
+        Usuario newUser = new Usuario(data.login(), encryptedPassword, data.role());
+
+        this.usuarioRepository.save(newUser);
 
         return ResponseEntity.ok().build();
     }

@@ -3,8 +3,6 @@ package br.unesp.rc.app.model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
-
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,116 +15,169 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+
+//@MappedSuperclass
 @Entity
-@Table(name = "usuarios")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Usuario implements UserDetails {
+public class Usuario implements UserDetails{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
-    
-    @Column(name = "email", nullable = false, unique = true, length = 100)
+
+    private String login;
     private String email;
+    private String senha;
+    private UserRole role;
 
-    @Column(name = "username", nullable = false, unique = true, length = 20)
-    private String username;
-
-    @Column(name = "password", nullable = false, length = 200)
-    private String password;
-    
     @Column(name = "foto_perfil", nullable = true, length = 30)
     private String fotoPerfil;
 
-    @OneToMany(mappedBy = "usuarioResposta", orphanRemoval = true, cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "usuarioResposta", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Resposta> respostas = new ArrayList<>();
-    
-    //Mudar o tipo das listas 
+
     @OneToMany(mappedBy = "usuarioPost", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Post> posts = new ArrayList<>();
-    
+
     @OneToMany(mappedBy = "usuarioAvaliacao", orphanRemoval = true, cascade = CascadeType.ALL)
-    private List<Avaliacao> avaliacoes = new ArrayList<>();
-    
-    private Role role;
-    
-    public Usuario(String username, String password, Role role) {
-        this.username = username;
-        this.password = password;
+    private List<Avaliacao> avaliacoes = new ArrayList<>();    
+
+    public Usuario(String login, String senha, UserRole role){
+        this.login = login;
+        this.senha = senha;
         this.role = role;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if(this == o) return true;
-        if(o == null || getClass() != o.getClass()) return false;
-        Usuario usuario = (Usuario) o;
-        return Objects.equals(id, usuario.id);
+    public String getLogin() {
+        return login;
+    }
+    public void setLogin(String login) {
+        this.login = login;
+    }
+    public String getSenha() {
+        return senha;
+    }
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Usuario other = (Usuario) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
     }
 
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "id=" + id +
-                "}";
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // TODO Auto-generated method stub
-        if(this.role == Role.ADMIN) {
+        // O Spring Security já tem algumas roles implementadas. Repare que 
+        // nesse método o retorno é uma colection, então cada usuário pode ter
+        // vários papéis (roles). Por exemplo, um ADMIN é ao mesmo tempo USER
+        // norma. Um CHEFE é ao mesmo tempo ADMIN e USER normal, ...
+        if (this.role == UserRole.ADMIN){
             return List.of(
-                new SimpleGrantedAuthority("ROLE_ADMIN"),
-                new SimpleGrantedAuthority("ROLE_USER")
-            );
-        } else {
-            return List.of(
-                new SimpleGrantedAuthority("ROLE_USER")
-            );
+                new SimpleGrantedAuthority("ROLE_ADMIN"),   // Admin
+                new SimpleGrantedAuthority("ROLE_USER")     // é ao mesmo tempo user normal
+                );
+        }else{
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
         }
     }
-
+    @Override
+    public String getPassword() {
+        // TODO Auto-generated method stub
+        return this.getSenha();
+    }
+    @Override
+    public String getUsername() {
+        // TODO Auto-generated method stub
+        return this.getLogin();
+    }
     @Override
     public boolean isAccountNonExpired() {
         // TODO Auto-generated method stub
-        return true;    
+        return true;
     }
-
     @Override
     public boolean isAccountNonLocked() {
         // TODO Auto-generated method stub
         return true;
     }
-
     @Override
     public boolean isCredentialsNonExpired() {
         // TODO Auto-generated method stub
         return true;
     }
-
     @Override
     public boolean isEnabled() {
         // TODO Auto-generated method stub
         return true;
     }
 
-    @Override
-    public String getPassword() {
-        return this.getPassword();
+    public UserRole getRole() {
+        return role;
     }
 
-    @Override
-    public String getUsername() {
-        return this.getUsername();
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 
+    public List<Resposta> getRespostas() {
+        return respostas;
+    }
+
+    public void setRespostas(List<Resposta> respostas) {
+        this.respostas = respostas;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
+
+    public List<Avaliacao> getAvaliacoes() {
+        return avaliacoes;
+    }
+
+    public void setAvaliacoes(List<Avaliacao> avaliacoes) {
+        this.avaliacoes = avaliacoes;
+    }
+    
 }
