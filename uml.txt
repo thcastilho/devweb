@@ -64,7 +64,7 @@ Usuario "1" <-up- "0..*" Resposta : Comenta
 Usuario "1" <-- "*" Genero : Cria
 
 Post "1" -up- "*" Avaliacao : Recebe
-Post "*" -- "*" Genero : Contém
+Post "*" <--> "*" Genero : Contém
 
 Comentario <|-down- Avaliacao
 Comentario <|-down- Resposta
