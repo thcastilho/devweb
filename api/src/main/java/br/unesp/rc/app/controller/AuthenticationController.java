@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.unesp.rc.app.model.AuthenticationDTO;
-import br.unesp.rc.app.model.LoginResponseDTO;
-import br.unesp.rc.app.model.RegisterDTO;
+import br.unesp.rc.app.dto.AuthenticationDTO;
+import br.unesp.rc.app.dto.LoginResponseDTO;
+import br.unesp.rc.app.dto.RegisterDTO;
 import br.unesp.rc.app.model.Usuario;
 import br.unesp.rc.app.repository.UsuarioRepository;
 import br.unesp.rc.app.security.TokenService;

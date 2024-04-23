@@ -1,4 +1,4 @@
-package br.unesp.rc.app.model;
+package br.unesp.rc.app.dto;
 
 public record AuthenticationDTO(String login, String password) {
 

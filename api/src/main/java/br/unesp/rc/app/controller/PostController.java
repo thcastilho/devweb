@@ -1,5 +1,6 @@
 package br.unesp.rc.app.controller;
 
+import br.unesp.rc.app.model.Avaliacao;
 import br.unesp.rc.app.model.Post;
 import br.unesp.rc.app.model.Usuario;
 import br.unesp.rc.app.repository.GeneroRepository;
@@ -112,6 +113,29 @@ public class PostController {
             return new ResponseEntity<>(post, HttpStatus.NO_CONTENT);
         } catch(Exception e) {
             return new ResponseEntity("Failed request: error while assigning a genre to a post.", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    // Calcula a média das avaliações do post
+    @PutMapping("/{id}")
+    public ResponseEntity calcAverageRating(@PathVariable Long id) {
+        try {
+            Post post = postRepository.findById(id).get();
+            List<Avaliacao> postAvaliacoes = post.getAvaliacoes();
+            int totalNumStars = 0;
+            
+            for(Avaliacao a : postAvaliacoes) {
+                totalNumStars += a.getNumStars();
+            }
+
+            float avgRating = (float) totalNumStars / postAvaliacoes.size();
+            post.setAverageRating(avgRating);
+            postRepository.save(post);
+
+            return new ResponseEntity<>("avgRating: " + avgRating, HttpStatus.OK);
+
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error while calculating the average rating of that post.", HttpStatus.NOT_FOUND);
         }
     }
 }
