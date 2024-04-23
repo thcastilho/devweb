@@ -2,6 +2,7 @@ package br.unesp.rc.app.controller;
 
 import br.unesp.rc.app.model.Usuario;
 import br.unesp.rc.app.repository.UsuarioRepository;
+import br.unesp.rc.app.service.UsuarioService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/usuarios")
 public class UsuarioController {
+
+    @Autowired
+    private UsuarioService userService;
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -53,9 +57,7 @@ public class UsuarioController {
     @PutMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<Usuario> updateUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
         try {
-            Usuario usuarioSalva = usuarioRepository.findById(id).get();
-            usuario.setId(id);
-            usuarioSalva = usuarioRepository.save(usuario);
+            Usuario usuarioSalva = userService.updateUsuarioById(id, usuario);
             return new ResponseEntity<>(usuarioSalva, HttpStatus.OK);
         
         } catch(Exception e) {
