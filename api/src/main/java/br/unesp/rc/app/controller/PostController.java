@@ -1,11 +1,7 @@
 package br.unesp.rc.app.controller;
 
-import br.unesp.rc.app.model.Avaliacao;
 import br.unesp.rc.app.model.Post;
-import br.unesp.rc.app.model.Usuario;
-import br.unesp.rc.app.repository.GeneroRepository;
-import br.unesp.rc.app.repository.PostRepository;
-import br.unesp.rc.app.repository.UsuarioRepository;
+import br.unesp.rc.app.service.PostService;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,117 +21,54 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostController {
 
     @Autowired
-    private PostRepository postRepository;
-
-    @Autowired
-    private GeneroRepository generoRepository;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private PostService postService;
     
     // Mostra post por Id
     @GetMapping(value="/{id}", produces="application/json")
-    public ResponseEntity<Post> getPostById(@PathVariable("id") Long id) {
-        try {
-            Post post = postRepository.findById(id).get();
-            return new ResponseEntity<>(post, HttpStatus.OK);
-        }catch(Exception e){
-            return new ResponseEntity("no such post", HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Post> getPostById(@PathVariable Long id) {
+        Post post = postService.getPostById(id);
+        return new ResponseEntity<>(post, HttpStatus.OK);
     }
     
     // Mostra todos posts
     @GetMapping(value="/", produces="application/json")
-    public ResponseEntity<List<Post>> getAllPost() {
-        List<Post> l = (List<Post>) postRepository.findAll();
-
-        return new ResponseEntity<>(l, HttpStatus.OK);
+    public ResponseEntity<List<Post>> getAllPosts() {        
+        List<Post> posts = postService.getAllPosts();
+        return new ResponseEntity<>(posts, HttpStatus.OK);
     } 
 
     // Cria novo post
     @PostMapping(value = "/{idUsuario}", produces = "application/json")
     public ResponseEntity<Post> createPost(@PathVariable Long idUsuario, @RequestBody Post post) {
-        try{
-            Usuario usuario = usuarioRepository.findById(idUsuario).get();
-            post.setUsuarioPost(usuario);
-            Post postSalvo = postRepository.save(post);
-            System.out.println(post);
-    
-            return new ResponseEntity<>(postSalvo, HttpStatus.CREATED);
-        }catch(Exception e) {
-            return new ResponseEntity("Failed request: ", HttpStatus.UNPROCESSABLE_ENTITY);
-        }
+        Post postSalvo = postService.createPost(idUsuario, post);
+        return new ResponseEntity<>(postSalvo, HttpStatus.CREATED);
     }
 
     // Atualiza post
     @PutMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post post) {
-        // if(postRepository.findById(id).isPresent()) {
-        //     post.setUsuarioPost(postRepository.findById(id).get().getUsuarioPost());
-        //     post.setId(id);
-        //     Post postSalva = postRepository.save(post);
-        //     return new ResponseEntity<>(postSalva, HttpStatus.OK);
-
-        // } else return new ResponseEntity("Failed request: post " + id + " does not exists.", HttpStatus.NOT_FOUND);
-        try {
-            post.setUsuarioPost(postRepository.findById(id).get().getUsuarioPost());
-            post.setId(id);
-            Post postSalva = postRepository.save(post);
-            return new ResponseEntity<>(postSalva, HttpStatus.OK);
-
-        } catch(Exception e) {
-            return new ResponseEntity("Failed request: post " + id + " does not exists.", HttpStatus.NOT_FOUND);
-        }
+        Post postSalvo = postService.updatePost(id, post);
+        return new ResponseEntity<>(postSalvo, HttpStatus.OK);
     }
 
     // Deleta post
     @DeleteMapping(value = "/{id}", produces = "application/text")
-    public ResponseEntity deletePost(@PathVariable Long id) {
-        try {
-            Post post = postRepository.findById(id).get();
-            postRepository.delete(post);
-
-            return new ResponseEntity("Post " + id + " was deleted", HttpStatus.OK);
-
-        } catch(Exception e) { 
-            return new ResponseEntity("Failed request: post " + id + " does not exists.", HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Void> deletePost(@PathVariable Long id) {
+        postService.deletePost(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     // Atribui um post a um gênero
     @PutMapping("/{idPost}/genero/{idGenero}")
-    public ResponseEntity assignPostToGenre(@PathVariable Long idPost, @PathVariable Long idGenero) {
-        try {
-            Post post = postRepository.findById(idPost).get();
-            post.assignGenre(generoRepository.findById(idGenero).get());
-            postRepository.save(post);
-    
-            return new ResponseEntity<>(post, HttpStatus.NO_CONTENT);
-        } catch(Exception e) {
-            return new ResponseEntity("Failed request: error while assigning a genre to a post.", HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Post> assignPostToGenre(@PathVariable Long idPost, @PathVariable Long idGenero) {
+        Post post = postService.assignPostToGenre(idPost, idGenero);
+        return new ResponseEntity<>(post, HttpStatus.OK);
     }
 
     // Calcula a média das avaliações do post
-    @PutMapping("/{id}")
-    public ResponseEntity calcAverageRating(@PathVariable Long id) {
-        try {
-            Post post = postRepository.findById(id).get();
-            List<Avaliacao> postAvaliacoes = post.getAvaliacoes();
-            int totalNumStars = 0;
-            
-            for(Avaliacao a : postAvaliacoes) {
-                totalNumStars += a.getNumStars();
-            }
-
-            float avgRating = (float) totalNumStars / postAvaliacoes.size();
-            post.setAverageRating(avgRating);
-            postRepository.save(post);
-
-            return new ResponseEntity<>("avgRating: " + avgRating, HttpStatus.OK);
-
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error while calculating the average rating of that post.", HttpStatus.NOT_FOUND);
-        }
+    @PutMapping("/average-rating/{id}")
+    public ResponseEntity<Void> calcAverageRating(@PathVariable Long id) {
+        postService.calcAverageRating(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

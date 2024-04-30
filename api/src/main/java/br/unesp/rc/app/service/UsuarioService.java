@@ -1,5 +1,7 @@
 package br.unesp.rc.app.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,14 +20,35 @@ public class UsuarioService {
     @Autowired
     private ComentarioRepository comentarioRepository;
 
+    public Usuario getUsuarioById(Long id) {
+        Usuario usuario = usuarioRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        return usuario;
+    }
+
+    public List<Usuario> getAllUsuarios() {
+        List<Usuario> usuarios = (List<Usuario>) usuarioRepository.findAll();
+        return usuarios;
+    }
+
     public Usuario updateUsuarioById(Long id, Usuario usuario) {
-        Usuario usuarioSalva = usuarioRepository.findById(id).get();
+        Usuario usuarioSalvo = usuarioRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        
         usuario.setId(id);
         String encryptedPassword = new BCryptPasswordEncoder().encode(usuario.getPassword());
         usuario.setSenha(encryptedPassword);
-        usuarioSalva = usuarioRepository.save(usuario);
+        usuarioSalvo = usuarioRepository.save(usuario);
         
-        return usuarioSalva;
+        return usuarioSalvo;
+    }
+
+    public void deleteUsuario(Long id) {
+        Usuario usuario = usuarioRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        usuarioRepository.delete(usuario);
     }
 
     public void likeComment(Long idUsuario, Long idComentario) {

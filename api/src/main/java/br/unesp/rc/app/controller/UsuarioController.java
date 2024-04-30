@@ -1,7 +1,6 @@
 package br.unesp.rc.app.controller;
 
 import br.unesp.rc.app.model.Usuario;
-import br.unesp.rc.app.repository.UsuarioRepository;
 import br.unesp.rc.app.service.UsuarioService;
 
 import java.util.List;
@@ -11,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,85 +20,57 @@ import org.springframework.web.bind.annotation.RestController;
 public class UsuarioController {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
     private UsuarioService usuarioService;
     
     // Mostra usuario por Id
     @GetMapping(value="/{id}", produces="application/json")
-    public ResponseEntity<Usuario> getUsuarioById(@PathVariable("id") Long id) {
-        try {
-            Usuario usuario = usuarioRepository.findById(id).get();
-            return new ResponseEntity<>(usuario, HttpStatus.OK);
-        }catch(Exception e){
-            return new ResponseEntity("no such user", HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Usuario> getUsuarioById(@PathVariable Long id) {
+        Usuario usuario = usuarioService.getUsuarioById(id);
+        return new ResponseEntity<>(usuario, HttpStatus.OK);
     }
     
     // Mostra todos usuarios
     @GetMapping(value="/", produces="application/json")
-    public ResponseEntity<List<Usuario>> getAllUsuario() {
-        List<Usuario> l = (List<Usuario>) usuarioRepository.findAll();
-
-        return new ResponseEntity<>(l, HttpStatus.OK);
+    public ResponseEntity<List<Usuario>> getAllUsuarios() {
+        List<Usuario> usuarios = usuarioService.getAllUsuarios();
+        return new ResponseEntity<>(usuarios, HttpStatus.OK);
     } 
-
-    // Cria novo usuario
-    @PostMapping(value = "/", produces = "application/json")
-    public ResponseEntity<Usuario> createUsuario(@RequestBody Usuario usuario) {
-        Usuario usuarioSalvo = usuarioRepository.save(usuario);
-
-        return new ResponseEntity<>(usuarioSalvo, HttpStatus.CREATED);
-    }
 
     // Atualiza usuario
     @PutMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<Usuario> updateUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
-        try {
-            Usuario usuarioSalva = usuarioService.updateUsuarioById(id, usuario);
-            return new ResponseEntity<>(usuarioSalva, HttpStatus.OK);
-        
-        } catch(Exception e) {
-            return new ResponseEntity("Failed request: user " + id + " does not exists.", HttpStatus.NOT_FOUND);
-        }
+        Usuario usuarioSalvo = usuarioService.updateUsuarioById(id, usuario);
+        return new ResponseEntity<>(usuarioSalvo, HttpStatus.OK);
     }
     
     // Deleta usuario
     @DeleteMapping(value = "/{id}", produces = "application/text")
-    public ResponseEntity deleteUsuario(@PathVariable("id") Long id) {
-        try {
-            Usuario usuario = usuarioRepository.findById(id).get();
-            usuarioRepository.delete(usuario);
-
-            return new ResponseEntity("User " + id + " was deleted", HttpStatus.OK);
-
-        } catch(Exception e) { 
-            return new ResponseEntity("Failed request: user " + id + " does not exists.", HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Void> deleteUsuario(@PathVariable Long id) {
+        usuarioService.deleteUsuario(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{idUsuario}/like/{idComentario}")
-    public ResponseEntity likeComment(@PathVariable Long idUsuario, @PathVariable Long idComentario) {
+    public ResponseEntity<Void> likeComment(@PathVariable Long idUsuario, @PathVariable Long idComentario) {
         usuarioService.likeComment(idUsuario, idComentario);
-        return new ResponseEntity<>("ok", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/{idUsuario}/dislike/{idComentario}")
-    public ResponseEntity dislikeComment(@PathVariable Long idUsuario, @PathVariable Long idComentario) {
+    public ResponseEntity<Void> dislikeComment(@PathVariable Long idUsuario, @PathVariable Long idComentario) {
         usuarioService.dislikeComment(idUsuario, idComentario);
-        return new ResponseEntity<>("ok", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/{idUsuario}/remove-like/{idComentario}")
-    public ResponseEntity removeLike(@PathVariable Long idUsuario, @PathVariable Long idComentario) {
+    public ResponseEntity<Void> removeLike(@PathVariable Long idUsuario, @PathVariable Long idComentario) {
         usuarioService.removeLike(idUsuario, idComentario);
-        return new ResponseEntity<>("ok", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/{idUsuario}/remove-dislike/{idComentario}")
-    public ResponseEntity removeDislike(@PathVariable Long idUsuario, @PathVariable Long idComentario) {
+    public ResponseEntity<Void> removeDislike(@PathVariable Long idUsuario, @PathVariable Long idComentario) {
         usuarioService.removeDislike(idUsuario, idComentario);
-        return new ResponseEntity<>("ok", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
