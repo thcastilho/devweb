@@ -43,6 +43,4 @@ public class Genero {
         this.name = name;
         this.posts = posts;
     }
-
-    //listarGeneros
 }

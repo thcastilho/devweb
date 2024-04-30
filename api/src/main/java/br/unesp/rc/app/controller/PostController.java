@@ -90,7 +90,7 @@ public class PostController {
 
     // Deleta post
     @DeleteMapping(value = "/{id}", produces = "application/text")
-    public ResponseEntity deletePost(@PathVariable("id") Long id) {
+    public ResponseEntity deletePost(@PathVariable Long id) {
         try {
             Post post = postRepository.findById(id).get();
             postRepository.delete(post);

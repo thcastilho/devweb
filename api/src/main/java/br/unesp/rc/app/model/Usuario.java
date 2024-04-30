@@ -2,19 +2,29 @@ package br.unesp.rc.app.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.JoinColumn;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -23,6 +33,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "usuarios")
 public class Usuario implements UserDetails{
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -47,6 +58,52 @@ public class Usuario implements UserDetails{
     
     @OneToMany(mappedBy = "usuarioGenero", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Genero> generosCriados = new ArrayList<>();
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable (
+        name = "comentarios_likes",
+        uniqueConstraints = @UniqueConstraint (
+            columnNames = {"usuario_id", "comentario_id"},
+            name = "unique_usuario_like"
+        ),
+        joinColumns = @JoinColumn (
+            name = "usuario_id",
+            referencedColumnName = "id",
+            table = "usuarios",
+            unique = false
+        ),
+        inverseJoinColumns = @JoinColumn (
+            name = "comentario_id",
+            referencedColumnName = "id",
+            table = "comentarios",
+            unique = false
+        )
+    )
+    private Set<Comentario> likes = new HashSet<>();
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable (
+        name = "comentarios_dislikes",
+        uniqueConstraints = @UniqueConstraint (
+            columnNames = {"usuario_id", "comentario_id"},
+            name = "unique_usuario_dislike"
+        ),
+        joinColumns = @JoinColumn (
+            name = "usuario_id",
+            referencedColumnName = "id",
+            table = "usuarios",
+            unique = false
+        ),
+        inverseJoinColumns = @JoinColumn (
+            name = "comentario_id",
+            referencedColumnName = "id",
+            table = "comentarios",
+            unique = false
+        )
+    )
+    private Set<Comentario> dislikes = new HashSet<>();
 
     public Usuario(String login, String senha, UserRole role){
         this.login = login;
@@ -189,5 +246,29 @@ public class Usuario implements UserDetails{
 
     public void setGenerosCriados(List<Genero> generosCriados) {
         this.generosCriados = generosCriados;
+    }
+
+    public Set<Comentario> getLikes() {
+        return this.likes;
+    }
+
+    public void setLikes(Set<Comentario> likes) {
+        this.likes = likes;
+    }
+
+    public Set<Comentario> getDislikes() {
+        return this.dislikes;
+    }
+
+    public void setDislikes(Set<Comentario> dislikes) {
+        this.dislikes = dislikes;
+    }
+
+    public void assignLike(Comentario comentario) {
+        this.likes.add(comentario);
+    }
+
+    public void assignDislike(Comentario comentario) {
+        this.dislikes.add(comentario);
     }
 }

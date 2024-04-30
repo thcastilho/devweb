@@ -1,9 +1,7 @@
 package br.unesp.rc.app.controller;
 
 import br.unesp.rc.app.model.Genero;
-import br.unesp.rc.app.model.Usuario;
-import br.unesp.rc.app.repository.GeneroRepository;
-import br.unesp.rc.app.repository.UsuarioRepository;
+import br.unesp.rc.app.service.GeneroService;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,66 +21,40 @@ import org.springframework.web.bind.annotation.RestController;
 public class GeneroController {
 
     @Autowired
-    private GeneroRepository generoRepository;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private GeneroService generoService;
     
     // Mostra genero por Id
     @GetMapping(value="/{id}", produces="application/json")
     public ResponseEntity<Genero> getGeneroById(@PathVariable("id") Long id) {
-        try {
-            Genero genero = generoRepository.findById(id).get();
-            return new ResponseEntity<>(genero, HttpStatus.OK);
-        }catch(Exception e){
-            return new ResponseEntity("no such genero", HttpStatus.NOT_FOUND);
-        }
+        Genero genero = generoService.getGeneroById(id);
+        return new ResponseEntity<>(genero, HttpStatus.OK);
     }
     
     // Mostra todos generos
     @GetMapping(value="/", produces="application/json")
     public ResponseEntity<List<Genero>> getAllGenero() {
-        List<Genero> l = (List<Genero>) generoRepository.findAll();
-
-        return new ResponseEntity<>(l, HttpStatus.OK);
+        List<Genero> generos = generoService.getAllGeneros();
+        return new ResponseEntity<>(generos, HttpStatus.OK);
     } 
 
     // Cria novo genero
     @PostMapping(value = "/{idUsuario}", produces = "application/json")
     public ResponseEntity<Genero> createGenero(@PathVariable Long idUsuario, @RequestBody Genero genero) {
-        Usuario usuario = usuarioRepository.findById(idUsuario).get();
-        genero.setUsuarioGenero(usuario);
-        Genero generoSalvo = generoRepository.save(genero);
-
+        Genero generoSalvo = generoService.createGenero(idUsuario, genero);
         return new ResponseEntity<>(generoSalvo, HttpStatus.CREATED);
     }
 
     // Atualiza genero
     @PutMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity<Genero> updateGenero(@PathVariable Long id, @RequestBody Genero genero) {
-        try {
-            Genero generoSalva = generoRepository.findById(id).get();
-            genero.setUsuarioGenero(generoRepository.findById(id).get().getUsuarioGenero());
-            genero.setId(id);
-            generoSalva = generoRepository.save(genero);
-            return new ResponseEntity<>(generoSalva, HttpStatus.OK);
-        
-        } catch(Exception e) {
-            return new ResponseEntity("Failed request: genre " + id + " does not exists.", HttpStatus.NOT_FOUND);
-        }
+        Genero generoSalvo = generoService.updateGenero(id, genero);
+        return new ResponseEntity<>(generoSalvo, HttpStatus.OK);
     }
     
     // Deleta genero
     @DeleteMapping(value = "/{id}", produces = "application/text")
-    public ResponseEntity deleteGenero(@PathVariable("id") Long id) {
-        try {
-            Genero genero = generoRepository.findById(id).get();
-            generoRepository.delete(genero);
-
-            return new ResponseEntity("Genre " + id + " was deleted", HttpStatus.OK);
-
-        } catch(Exception e) { 
-            return new ResponseEntity("Failed request: genre " + id + " does not exists.", HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<Void> deleteGenero(@PathVariable("id") Long id) {
+        generoService.deleteGenero(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

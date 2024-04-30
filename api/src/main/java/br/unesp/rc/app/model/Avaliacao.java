@@ -16,7 +16,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@DiscriminatorValue("avaliacoes")
+@DiscriminatorValue("avaliacao")
 @Getter
 @Setter
 public class Avaliacao extends Comentario {
