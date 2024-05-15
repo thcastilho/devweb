@@ -19,6 +19,9 @@ public class GeneroService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private TokenService tokenService;
+
     public Genero getGeneroById(Long id) {
         Genero genero = generoRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Genero not found"));
@@ -27,14 +30,15 @@ public class GeneroService {
     }
 
     public List<Genero> getAllGeneros() {
+        System.out.println("vai buscar");
         List<Genero> generos = (List<Genero>)generoRepository.findAll();
+        System.out.println("voltou");
         return generos;
     }
 
-    public Genero createGenero(Long idUsuario, Genero genero) {
-        Usuario usuario = usuarioRepository.findById(idUsuario)
-            .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        
+    public Genero createGenero(String token, Genero genero) {
+        Usuario usuario = usuarioRepository.findByLogin(tokenService.validateToken(token.replace("Bearer ", "")));
+
         genero.setUsuarioGenero(usuario);
 
         return generoRepository.save(genero);

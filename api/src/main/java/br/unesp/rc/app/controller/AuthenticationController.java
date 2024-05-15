@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +16,7 @@ import br.unesp.rc.app.dto.LoginResponseDTO;
 import br.unesp.rc.app.dto.RegisterDTO;
 import br.unesp.rc.app.model.Usuario;
 import br.unesp.rc.app.repository.UsuarioRepository;
-import br.unesp.rc.app.security.TokenService;
+import br.unesp.rc.app.service.TokenService;
 import jakarta.validation.Valid;
 
 @RestController
@@ -29,6 +30,7 @@ public class AuthenticationController {
     @Autowired
     private TokenService tokenService;
 
+    @CrossOrigin("http://localhost:3000/")
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data){
      
@@ -36,7 +38,7 @@ public class AuthenticationController {
         // Dessa maneira, caso haja um vazamento do BD, as senhas estarão criptografadas
         // e não poderão ser diretamente acessadas. 
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
-        System.out.println(usernamePassword);
+        // System.out.println(usernamePassword);
         try{
             var auth = this.authenticationManager.authenticate(usernamePassword);
             var token = tokenService.generateToken((Usuario)auth.getPrincipal());
@@ -49,6 +51,7 @@ public class AuthenticationController {
         }
     }
 
+    @CrossOrigin("http://localhost:3000/")
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
         // Primeiro verifica se já não existe outro usuário cadastrado com o mesmo login
@@ -62,9 +65,9 @@ public class AuthenticationController {
 
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        System.out.println(data.login());
-        System.out.println(encryptedPassword);
-        System.out.println(data.role());
+        // System.out.println(data.login());
+        // System.out.println(encryptedPassword);
+        // System.out.println(data.role());
 
         Usuario newUser = new Usuario(data.login(), encryptedPassword, data.role());
 

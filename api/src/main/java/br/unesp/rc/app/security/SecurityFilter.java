@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import br.unesp.rc.app.repository.UsuarioRepository;
+import br.unesp.rc.app.service.TokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,14 +48,14 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     private String recoverToken(HttpServletRequest request){
         var authHeader = request.getHeader("Authorization");
-        System.out.println("Chegou aki");
-        System.out.println(authHeader);
+        // System.out.println("Chegou aki");
+        // System.out.println(authHeader);
         if (authHeader == null){
-        System.out.println("Retornando null");
+        // System.out.println("Retornando null");
          return null;
         }
         var aux = authHeader.replace("Bearer ", "");
-        System.out.println(aux);
+        // System.out.println(aux);
         return aux;
 
     }

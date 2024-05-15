@@ -24,6 +24,9 @@ public class PostService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private TokenService tokenService;
+
     public Post getPostById(Long id) {
         Post post = postRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Post not found"));
@@ -36,9 +39,8 @@ public class PostService {
         return posts;
     }
 
-    public Post createPost(Long idUsuario, Post post) {
-        Usuario usuario = usuarioRepository.findById(idUsuario)
-            .orElseThrow(() -> new IllegalArgumentException("User not found"));
+    public Post createPost(String token, Post post) {
+        Usuario usuario = usuarioRepository.findByLogin(tokenService.validateToken(token.replace("Bearer ", "")));
 
         post.setUsuarioPost(usuario);
         

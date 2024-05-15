@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.core.SpringVersion;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +24,8 @@ public class ApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ApiApplication.class, args);
 		System.out.println("Aplicacao rodando");
+		System.out.println("version: " + SpringVersion.getVersion());
+		
 	}
 
 }

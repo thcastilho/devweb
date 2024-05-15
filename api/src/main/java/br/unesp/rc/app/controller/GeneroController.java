@@ -7,12 +7,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,6 +33,7 @@ public class GeneroController {
     }
     
     // Mostra todos generos
+    //@CrossOrigin("http://localhost:3000/")
     @GetMapping(value="/", produces="application/json")
     public ResponseEntity<List<Genero>> getAllGenero() {
         List<Genero> generos = generoService.getAllGeneros();
@@ -38,9 +41,9 @@ public class GeneroController {
     } 
 
     // Cria novo genero
-    @PostMapping(value = "/{idUsuario}", produces = "application/json")
-    public ResponseEntity<Genero> createGenero(@PathVariable Long idUsuario, @RequestBody Genero genero) {
-        Genero generoSalvo = generoService.createGenero(idUsuario, genero);
+    @PostMapping(value = "/", produces = "application/json")
+    public ResponseEntity<Genero> createGenero(@RequestHeader (name="Authorization") String token, @RequestBody Genero genero) {
+        Genero generoSalvo = generoService.createGenero(token, genero);
         return new ResponseEntity<>(generoSalvo, HttpStatus.CREATED);
     }
 

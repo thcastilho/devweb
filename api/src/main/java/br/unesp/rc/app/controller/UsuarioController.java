@@ -26,6 +26,7 @@ public class UsuarioController {
     @GetMapping(value="/{id}", produces="application/json")
     public ResponseEntity<Usuario> getUsuarioById(@PathVariable Long id) {
         Usuario usuario = usuarioService.getUsuarioById(id);
+        System.out.println("Voltou");
         return new ResponseEntity<>(usuario, HttpStatus.OK);
     }
     
