@@ -20,10 +20,19 @@ public class UsuarioService {
     @Autowired
     private ComentarioRepository comentarioRepository;
 
+    @Autowired
+    private TokenService tokenService;
+
     public Usuario getUsuarioById(Long id) {
         Usuario usuario = usuarioRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
+        return usuario;
+    }
+
+    public Usuario getUsuarioByToken(String token) {
+        Usuario usuario = usuarioRepository.findByLogin(tokenService.validateToken(token.replace("Bearer ", "")));
+        System.out.println(usuario.getLogin());
         return usuario;
     }
 

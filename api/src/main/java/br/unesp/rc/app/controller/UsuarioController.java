@@ -7,11 +7,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,6 +28,15 @@ public class UsuarioController {
     @GetMapping(value="/{id}", produces="application/json")
     public ResponseEntity<Usuario> getUsuarioById(@PathVariable Long id) {
         Usuario usuario = usuarioService.getUsuarioById(id);
+        System.out.println("Voltou");
+        return new ResponseEntity<>(usuario, HttpStatus.OK);
+    }
+
+    // Mostra as infos do usuário logado
+    @CrossOrigin("http://localhost:3000/")
+    @GetMapping(value = "/me", produces = "application/json")
+    public ResponseEntity<Usuario> getUsuarioByToken(@RequestHeader (name="Authorization") String token) {
+        Usuario usuario = usuarioService.getUsuarioByToken(token);
         System.out.println("Voltou");
         return new ResponseEntity<>(usuario, HttpStatus.OK);
     }
