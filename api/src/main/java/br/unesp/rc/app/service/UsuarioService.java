@@ -32,7 +32,6 @@ public class UsuarioService {
 
     public Usuario getUsuarioByToken(String token) {
         Usuario usuario = usuarioRepository.findByLogin(tokenService.validateToken(token.replace("Bearer ", "")));
-        System.out.println(usuario.getLogin());
         return usuario;
     }
 
@@ -60,15 +59,12 @@ public class UsuarioService {
         usuarioRepository.delete(usuario);
     }
 
-    public void likeComment(Long idUsuario, Long idComentario) {
-        Usuario usuario = usuarioRepository.findById(idUsuario)
-            .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        
+    public void likeComment(Usuario usuario, Long idComentario) {     
         Comentario comentario = comentarioRepository.findById(idComentario)
             .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
 
         if(usuario.getDislikes().contains(comentario)) {
-            removeDislike(idUsuario, idComentario);
+            removeDislike(usuario, idComentario);
         }
         
         if(!usuario.getLikes().contains(comentario)) {
@@ -83,15 +79,12 @@ public class UsuarioService {
         }
     }
 
-    public void dislikeComment(Long idUsuario, Long idComentario) {
-        Usuario usuario = usuarioRepository.findById(idUsuario)
-            .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        
+    public void dislikeComment(Usuario usuario, Long idComentario) {  
         Comentario comentario = comentarioRepository.findById(idComentario)
             .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
 
         if(usuario.getLikes().contains(comentario)) {
-            removeLike(idUsuario, idComentario);
+            removeLike(usuario, idComentario);
         }
         
         if(!usuario.getDislikes().contains(comentario)) {
@@ -106,10 +99,7 @@ public class UsuarioService {
         }
     }
 
-    public void removeLike(Long idUsuario, Long idComentario) {
-        Usuario usuario = usuarioRepository.findById(idUsuario)
-            .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        
+    public void removeLike(Usuario usuario, Long idComentario) {
         Comentario comentario = comentarioRepository.findById(idComentario)
             .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
 
@@ -125,10 +115,7 @@ public class UsuarioService {
         }
     }
 
-    public void removeDislike(Long idUsuario, Long idComentario) {
-        Usuario usuario = usuarioRepository.findById(idUsuario)
-            .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        
+    public void removeDislike(Usuario usuario, Long idComentario) {        
         Comentario comentario = comentarioRepository.findById(idComentario)
             .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
 

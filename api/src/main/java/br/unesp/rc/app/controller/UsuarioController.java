@@ -28,7 +28,6 @@ public class UsuarioController {
     @GetMapping(value="/{id}", produces="application/json")
     public ResponseEntity<Usuario> getUsuarioById(@PathVariable Long id) {
         Usuario usuario = usuarioService.getUsuarioById(id);
-        System.out.println("Voltou");
         return new ResponseEntity<>(usuario, HttpStatus.OK);
     }
 
@@ -37,7 +36,6 @@ public class UsuarioController {
     @GetMapping(value = "/me", produces = "application/json")
     public ResponseEntity<Usuario> getUsuarioByToken(@RequestHeader (name="Authorization") String token) {
         Usuario usuario = usuarioService.getUsuarioByToken(token);
-        System.out.println("Voltou");
         return new ResponseEntity<>(usuario, HttpStatus.OK);
     }
     
@@ -62,27 +60,31 @@ public class UsuarioController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/{idUsuario}/like/{idComentario}")
-    public ResponseEntity<Void> likeComment(@PathVariable Long idUsuario, @PathVariable Long idComentario) {
-        usuarioService.likeComment(idUsuario, idComentario);
+    @PutMapping("/like/{idComentario}")
+    public ResponseEntity<Void> likeComment(@RequestHeader (name="Authorization") String token, @PathVariable Long idComentario) {
+        Usuario usuario = usuarioService.getUsuarioByToken(token);
+        usuarioService.likeComment(usuario, idComentario);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/{idUsuario}/dislike/{idComentario}")
-    public ResponseEntity<Void> dislikeComment(@PathVariable Long idUsuario, @PathVariable Long idComentario) {
-        usuarioService.dislikeComment(idUsuario, idComentario);
+    @PutMapping("/dislike/{idComentario}")
+    public ResponseEntity<Void> dislikeComment(@RequestHeader (name="Authorization") String token, @PathVariable Long idComentario) {
+        Usuario usuario = usuarioService.getUsuarioByToken(token);
+        usuarioService.dislikeComment(usuario, idComentario);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/{idUsuario}/remove-like/{idComentario}")
-    public ResponseEntity<Void> removeLike(@PathVariable Long idUsuario, @PathVariable Long idComentario) {
-        usuarioService.removeLike(idUsuario, idComentario);
+    @PutMapping("/remove-like/{idComentario}")
+    public ResponseEntity<Void> removeLike(@RequestHeader (name="Authorization") String token, @PathVariable Long idComentario) {
+        Usuario usuario = usuarioService.getUsuarioByToken(token);
+        usuarioService.removeLike(usuario, idComentario);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("/{idUsuario}/remove-dislike/{idComentario}")
-    public ResponseEntity<Void> removeDislike(@PathVariable Long idUsuario, @PathVariable Long idComentario) {
-        usuarioService.removeDislike(idUsuario, idComentario);
+    @PutMapping("/remove-dislike/{idComentario}")
+    public ResponseEntity<Void> removeDislike(@RequestHeader (name="Authorization") String token, @PathVariable Long idComentario) {
+        Usuario usuario = usuarioService.getUsuarioByToken(token);
+        usuarioService.removeDislike(usuario, idComentario);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

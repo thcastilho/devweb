@@ -1,7 +1,9 @@
 package br.unesp.rc.app.controller;
 
 import br.unesp.rc.app.model.Genero;
+import br.unesp.rc.app.model.Usuario;
 import br.unesp.rc.app.service.GeneroService;
+import br.unesp.rc.app.service.UsuarioService;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class GeneroController {
 
     @Autowired
     private GeneroService generoService;
+
+    @Autowired
+    private UsuarioService usuarioService;
     
     // Mostra genero por Id
     @GetMapping(value="/{id}", produces="application/json")
@@ -43,7 +48,8 @@ public class GeneroController {
     // Cria novo genero
     @PostMapping(value = "/", produces = "application/json")
     public ResponseEntity<Genero> createGenero(@RequestHeader (name="Authorization") String token, @RequestBody Genero genero) {
-        Genero generoSalvo = generoService.createGenero(token, genero);
+        Usuario usuario = usuarioService.getUsuarioByToken(token);
+        Genero generoSalvo = generoService.createGenero(usuario, genero);
         return new ResponseEntity<>(generoSalvo, HttpStatus.CREATED);
     }
 

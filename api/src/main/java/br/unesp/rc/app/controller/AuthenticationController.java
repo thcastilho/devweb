@@ -38,7 +38,7 @@ public class AuthenticationController {
         // Dessa maneira, caso haja um vazamento do BD, as senhas estarão criptografadas
         // e não poderão ser diretamente acessadas. 
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
-        // System.out.println(usernamePassword);
+
         try{
             var auth = this.authenticationManager.authenticate(usernamePassword);
             var token = tokenService.generateToken((Usuario)auth.getPrincipal());
@@ -46,7 +46,6 @@ public class AuthenticationController {
             return ResponseEntity.ok(new LoginResponseDTO(token));
         }catch(Exception e){
             System.out.println("Erro: User does not exists!");
-            // System.out.println(e);
             return ResponseEntity.internalServerError().build();
         }
     }
@@ -63,11 +62,7 @@ public class AuthenticationController {
         // Caso não exista, vamos encriptar a senha para salvar no BD. A senha bruta do usuário 
         // NÃO DEVE SER INSERIDA NO BD POR MEDIDAS DE SEGURANÇA.
 
-
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        // System.out.println(data.login());
-        // System.out.println(encryptedPassword);
-        // System.out.println(data.role());
 
         Usuario newUser = new Usuario(data.login(), encryptedPassword, data.role());
 

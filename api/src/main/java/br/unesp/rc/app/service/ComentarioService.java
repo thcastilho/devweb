@@ -26,12 +26,9 @@ public class ComentarioService {
     @Autowired
     private PostRepository postRepository;
 
-    public Avaliacao createAvaliacao(Long idPost, Long idUsuario, Avaliacao avaliacao) {
+    public Avaliacao createAvaliacao(Long idPost, Usuario usuario, Avaliacao avaliacao) {
         Post post = postRepository.findById(idPost)
             .orElseThrow(() -> new IllegalArgumentException("Post not found"));
-        
-        Usuario usuario = usuarioRepository.findById(idUsuario)
-            .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         avaliacao.setAvaliacaoPost(post);
         avaliacao.setUsuarioAvaliacao(usuario);
@@ -40,13 +37,10 @@ public class ComentarioService {
         return avaliacao;
     }
 
-    public Resposta createResposta(Long idAvaliacao, Long idUsuario, Resposta resposta) {
+    public Resposta createResposta(Long idAvaliacao, Usuario usuario, Resposta resposta) {
         Comentario avaliacao = comentarioRepository.findById(idAvaliacao)
             .orElseThrow(() -> new IllegalArgumentException("Review not found"));
     
-        Usuario usuario = usuarioRepository.findById(idUsuario)
-            .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
         resposta.setAvaliacaoResposta((Avaliacao)avaliacao);
         resposta.setUsuarioResposta(usuario);
         comentarioRepository.save(resposta);
@@ -65,10 +59,7 @@ public class ComentarioService {
         return post.getAvaliacoes();
     }
 
-    public List<Avaliacao> getAvaliacoesByUser(Long idUsuario) {
-        Usuario usuario = usuarioRepository.findById(idUsuario)
-            .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        
+    public List<Avaliacao> getAvaliacoesByUser(Usuario usuario) {
         return usuario.getAvaliacoes();
     }
 
@@ -79,10 +70,7 @@ public class ComentarioService {
         return avaliacao.getRespostas();
     }
 
-    public List<Resposta> getRespostasByUser(Long idUsuario) {
-        Usuario usuario = usuarioRepository.findById(idUsuario)
-            .orElseThrow(() -> new IllegalArgumentException("User not found"));
-        
+    public List<Resposta> getRespostasByUser(Usuario usuario) {
         return usuario.getRespostas();
     }
 }

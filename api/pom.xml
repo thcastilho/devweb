@@ -36,7 +36,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- My -->
 		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
 		
 		<dependency>

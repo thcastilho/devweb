@@ -10,12 +10,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.unesp.rc.app.model.Avaliacao;
 import br.unesp.rc.app.model.Resposta;
+import br.unesp.rc.app.model.Usuario;
 import br.unesp.rc.app.service.ComentarioService;
+import br.unesp.rc.app.service.UsuarioService;
 
 @RestController
 @RequestMapping("/comentarios")
@@ -24,15 +27,20 @@ public class ComentarioController {
     @Autowired
     private ComentarioService comentarioService;
 
-    @PostMapping("/avaliacao/{idPost}/{idUsuario}")
-    public ResponseEntity<Avaliacao> createAvaliacao(@PathVariable Long idPost, @PathVariable Long idUsuario, @RequestBody Avaliacao avaliacao) {
-        comentarioService.createAvaliacao(idPost, idUsuario, avaliacao);
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @PostMapping("/avaliacao/{idPost}")
+    public ResponseEntity<Avaliacao> createAvaliacao(@RequestHeader (name="Authorization") String token, @PathVariable Long idPost, @RequestBody Avaliacao avaliacao) {
+        Usuario usuario = usuarioService.getUsuarioByToken(token);
+        comentarioService.createAvaliacao(idPost, usuario, avaliacao);
         return new ResponseEntity<>(avaliacao, HttpStatus.CREATED);
     }
 
-    @PostMapping("/resposta/{idAvaliacao}/{idUsuario}")
-    public ResponseEntity<Resposta> createResposta(@PathVariable Long idAvaliacao, @PathVariable Long idUsuario, @RequestBody Resposta resposta) {
-        comentarioService.createResposta(idAvaliacao, idUsuario, resposta);
+    @PostMapping("/resposta/{idAvaliacao}")
+    public ResponseEntity<Resposta> createResposta(@RequestHeader (name="Authorization") String token, @PathVariable Long idAvaliacao, @RequestBody Resposta resposta) {
+        Usuario usuario = usuarioService.getUsuarioByToken(token);
+        comentarioService.createResposta(idAvaliacao, usuario, resposta);
         return new ResponseEntity<>(resposta, HttpStatus.CREATED);
     }
 
@@ -48,9 +56,10 @@ public class ComentarioController {
         return new ResponseEntity<>(avaliacoes, HttpStatus.OK);
     }
 
-    @GetMapping("/avaliacoes/{idUsuario}")
-    public ResponseEntity<List<Avaliacao>> getAvaliacoesByUser(@PathVariable Long idUsuario) {
-        List<Avaliacao> avaliacoes = comentarioService.getAvaliacoesByUser(idUsuario);
+    @GetMapping("/avaliacoes")
+    public ResponseEntity<List<Avaliacao>> getAvaliacoesByUser(@RequestHeader (name="Authorization") String token) {
+        Usuario usuario = usuarioService.getUsuarioByToken(token);
+        List<Avaliacao> avaliacoes = comentarioService.getAvaliacoesByUser(usuario);
         return new ResponseEntity<>(avaliacoes, HttpStatus.OK);
     }
 
@@ -61,8 +70,9 @@ public class ComentarioController {
     }
 
     @GetMapping("/respostas/{idUsuario}")
-    public ResponseEntity<List<Resposta>> getRespostasByUser(@PathVariable Long idUsuario) {
-        List<Resposta> respostas = comentarioService.getRespostasByUser(idUsuario);
+    public ResponseEntity<List<Resposta>> getRespostasByUser(@RequestHeader (name="Authorization") String token) {
+        Usuario usuario = usuarioService.getUsuarioByToken(token);
+        List<Resposta> respostas = comentarioService.getRespostasByUser(usuario);
         return new ResponseEntity<>(respostas, HttpStatus.OK);
     }
 }

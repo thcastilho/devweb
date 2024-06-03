@@ -1,7 +1,9 @@
 package br.unesp.rc.app.controller;
 
 import br.unesp.rc.app.model.Post;
+import br.unesp.rc.app.model.Usuario;
 import br.unesp.rc.app.service.PostService;
+import br.unesp.rc.app.service.UsuarioService;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class PostController {
     @Autowired
     private PostService postService;
     
+    @Autowired
+    private UsuarioService usuarioService;
+
     // Mostra post por Id
     @GetMapping(value="/{id}", produces="application/json")
     public ResponseEntity<Post> getPostById(@PathVariable Long id) {
@@ -44,7 +49,8 @@ public class PostController {
     @CrossOrigin("http://localhost:3000")
     @PostMapping(value = "/", produces = "application/json")
     public ResponseEntity<Post> createPost(@RequestHeader (name="Authorization") String token, @RequestBody Post post) {
-        Post postSalvo = postService.createPost(token, post);
+        Usuario usuario = usuarioService.getUsuarioByToken(token);
+        Post postSalvo = postService.createPost(usuario, post);
         return new ResponseEntity<>(postSalvo, HttpStatus.CREATED);
     }
 

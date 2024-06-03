@@ -8,19 +8,12 @@ import org.springframework.stereotype.Service;
 import br.unesp.rc.app.model.Genero;
 import br.unesp.rc.app.model.Usuario;
 import br.unesp.rc.app.repository.GeneroRepository;
-import br.unesp.rc.app.repository.UsuarioRepository;
 
 @Service
 public class GeneroService {
     
     @Autowired
     private GeneroRepository generoRepository;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
-
-    @Autowired
-    private TokenService tokenService;
 
     public Genero getGeneroById(Long id) {
         Genero genero = generoRepository.findById(id)
@@ -30,15 +23,11 @@ public class GeneroService {
     }
 
     public List<Genero> getAllGeneros() {
-        System.out.println("vai buscar");
         List<Genero> generos = (List<Genero>)generoRepository.findAll();
-        System.out.println("voltou");
         return generos;
     }
 
-    public Genero createGenero(String token, Genero genero) {
-        Usuario usuario = usuarioRepository.findByLogin(tokenService.validateToken(token.replace("Bearer ", "")));
-
+    public Genero createGenero(Usuario usuario, Genero genero) {
         genero.setUsuarioGenero(usuario);
 
         return generoRepository.save(genero);
