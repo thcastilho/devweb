@@ -1,11 +1,14 @@
 package br.unesp.rc.app.model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -34,6 +38,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "usuarios")
+@EntityListeners(AuditingEntityListener.class)
 public class Usuario implements UserDetails{
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -105,6 +110,10 @@ public class Usuario implements UserDetails{
     )
     private Set<Comentario> dislikes = new HashSet<>();
 
+    @CreatedDate
+    @Column(name = "data_criacao")
+    private LocalDateTime dataCriacao;
+
     public Usuario(String login, String senha, UserRole role){
         this.login = login;
         this.senha = senha;
@@ -138,6 +147,7 @@ public class Usuario implements UserDetails{
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         return result;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
