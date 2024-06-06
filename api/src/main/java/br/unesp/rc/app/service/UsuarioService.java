@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import br.unesp.rc.app.dto.UpdateUserDTO;
 import br.unesp.rc.app.model.Comentario;
 import br.unesp.rc.app.model.Usuario;
 import br.unesp.rc.app.repository.ComentarioRepository;
@@ -53,29 +54,38 @@ public class UsuarioService {
         return usuarioSalvo;
     }
 
-    public Usuario updateUsuarioByToken(String token, Usuario usuario) {
-        System.out.println("entrou aki");
+    public Usuario updateUsuarioByToken(String token, UpdateUserDTO data) {
         Usuario usuarioSalvo = usuarioRepository.findByLogin(tokenService.validateToken(token.replace("Bearer ", "")));
-        
-        usuario.setId(usuarioSalvo.getId());
-
-        if (usuario.getPassword() != null) {
-            String encryptedPassword = new BCryptPasswordEncoder().encode(usuario.getPassword());
-            usuario.setSenha(encryptedPassword);
-        } else {
-            usuario.setSenha(usuarioSalvo.getSenha());
+    
+        if (data.currentPassword() != null) {
+            Boolean match = new BCryptPasswordEncoder().matches(data.currentPassword(), usuarioSalvo.getSenha());
+            if (match == false) {
+                throw new RuntimeException("Senha atual inválida");
+            }
         }
-
-        usuarioSalvo = usuarioRepository.save(usuario);
-        System.out.println("chegou ao final");
-        return usuarioSalvo;
+    
+        if (data.login() != null) {
+            usuarioSalvo.setLogin(data.login());
+        }
+        if (data.email() != null) {
+            usuarioSalvo.setEmail(data.email());
+        }
+        if (data.sexo() != null) {
+            usuarioSalvo.setSexo(data.sexo());
+        }
+    
+        if (data.newPassword() != null && data.newPassword().equals(data.confirmPassword())) {
+            String encryptedPassword = new BCryptPasswordEncoder().encode(data.newPassword());
+            usuarioSalvo.setSenha(encryptedPassword);
+        }
+    
+        return usuarioRepository.save(usuarioSalvo);
     }
 
-    public void deleteUsuario(Long id) {
-        Usuario usuario = usuarioRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-        usuarioRepository.delete(usuario);
+    public void deleteUsuario(String token) {
+        Usuario usuarioSalvo = usuarioRepository.findByLogin(tokenService.validateToken(token.replace("Bearer ", "")));
+    
+        usuarioRepository.delete(usuarioSalvo);
     }
 
     public void likeComment(Usuario usuario, Long idComentario) {     

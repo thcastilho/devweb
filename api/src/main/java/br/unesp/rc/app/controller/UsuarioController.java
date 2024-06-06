@@ -1,7 +1,9 @@
 package br.unesp.rc.app.controller;
 
+import br.unesp.rc.app.dto.UpdateUserDTO;
 import br.unesp.rc.app.model.Usuario;
 import br.unesp.rc.app.service.UsuarioService;
+import jakarta.validation.Valid;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,11 +51,9 @@ public class UsuarioController {
     // Atualiza usuario
     @CrossOrigin("http://localhost:3000/")
     @PutMapping(value = "/", produces = "application/json")
-    public ResponseEntity<Usuario> updateUsuario(@RequestHeader (name="Authorization") String token, @RequestBody Usuario usuario) {
+    public ResponseEntity<Usuario> updateUsuario(@RequestHeader (name="Authorization") String token, @RequestBody @Valid UpdateUserDTO data) {
         try {
-            System.out.println("CHAMA");
-
-            Usuario usuarioSalvo = usuarioService.updateUsuarioByToken(token, usuario);
+            Usuario usuarioSalvo = usuarioService.updateUsuarioByToken(token, data);
             return new ResponseEntity<>(usuarioSalvo, HttpStatus.OK);
         } catch (Exception e) {
             System.out.println("Erro ao atualizar usuário");
@@ -62,9 +62,10 @@ public class UsuarioController {
     }
 
     // Deleta usuario
-    @DeleteMapping(value = "/{id}", produces = "application/text")
-    public ResponseEntity<Void> deleteUsuario(@PathVariable Long id) {
-        usuarioService.deleteUsuario(id);
+    @CrossOrigin("http://localhost:3000/")
+    @DeleteMapping(value = "/", produces = "application/text")
+    public ResponseEntity<Void> deleteUsuario(@RequestHeader (name="Authorization") String token) {
+        usuarioService.deleteUsuario(token);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
