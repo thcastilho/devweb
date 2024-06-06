@@ -19,6 +19,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -47,10 +49,19 @@ public class Usuario implements UserDetails{
     private String login;
     private String email;
     private String senha;
+    
+    public enum Sexo {
+        HOMEM, MULHER, NAO_INFORMADO
+    }
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "sexo", length = 25)
+    private Sexo sexo;
+
     private UserRole role;
 
-    @Column(name = "foto_perfil", nullable = true, length = 30)
-    private String fotoPerfil;
+    // @Column(name = "foto_perfil", nullable = true, length = 30)
+    // private String fotoPerfil;
 
 	@OneToMany(mappedBy = "usuarioResposta", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Resposta> respostas = new ArrayList<>();
@@ -110,12 +121,23 @@ public class Usuario implements UserDetails{
     )
     private Set<Comentario> dislikes = new HashSet<>();
 
+    public Sexo getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(Sexo sexo) {
+        this.sexo = sexo;
+    }
+
     @CreatedDate
     @Column(name = "data_criacao")
     private LocalDateTime dataCriacao;
 
-    public Usuario(String login, String senha, UserRole role){
+
+    public Usuario(String login, String email, Sexo sexo, String senha, UserRole role){
         this.login = login;
+        this.email = email;
+        this.sexo = sexo;
         this.senha = senha;
         this.role = role;
     }

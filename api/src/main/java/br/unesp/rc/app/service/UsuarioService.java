@@ -32,6 +32,7 @@ public class UsuarioService {
 
     public Usuario getUsuarioByToken(String token) {
         Usuario usuario = usuarioRepository.findByLogin(tokenService.validateToken(token.replace("Bearer ", "")));
+        System.out.println(usuario);
         return usuario;
     }
 
@@ -49,6 +50,24 @@ public class UsuarioService {
         usuario.setSenha(encryptedPassword);
         usuarioSalvo = usuarioRepository.save(usuario);
         
+        return usuarioSalvo;
+    }
+
+    public Usuario updateUsuarioByToken(String token, Usuario usuario) {
+        System.out.println("entrou aki");
+        Usuario usuarioSalvo = usuarioRepository.findByLogin(tokenService.validateToken(token.replace("Bearer ", "")));
+        
+        usuario.setId(usuarioSalvo.getId());
+
+        if (usuario.getPassword() != null) {
+            String encryptedPassword = new BCryptPasswordEncoder().encode(usuario.getPassword());
+            usuario.setSenha(encryptedPassword);
+        } else {
+            usuario.setSenha(usuarioSalvo.getSenha());
+        }
+
+        usuarioSalvo = usuarioRepository.save(usuario);
+        System.out.println("chegou ao final");
         return usuarioSalvo;
     }
 

@@ -47,12 +47,20 @@ public class UsuarioController {
     } 
 
     // Atualiza usuario
-    @PutMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<Usuario> updateUsuario(@PathVariable Long id, @RequestBody Usuario usuario) {
-        Usuario usuarioSalvo = usuarioService.updateUsuarioById(id, usuario);
-        return new ResponseEntity<>(usuarioSalvo, HttpStatus.OK);
+    @CrossOrigin("http://localhost:3000/")
+    @PutMapping(value = "/", produces = "application/json")
+    public ResponseEntity<Usuario> updateUsuario(@RequestHeader (name="Authorization") String token, @RequestBody Usuario usuario) {
+        try {
+            System.out.println("CHAMA");
+
+            Usuario usuarioSalvo = usuarioService.updateUsuarioByToken(token, usuario);
+            return new ResponseEntity<>(usuarioSalvo, HttpStatus.OK);
+        } catch (Exception e) {
+            System.out.println("Erro ao atualizar usuário");
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-    
+
     // Deleta usuario
     @DeleteMapping(value = "/{id}", produces = "application/text")
     public ResponseEntity<Void> deleteUsuario(@PathVariable Long id) {
