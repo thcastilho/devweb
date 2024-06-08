@@ -38,19 +38,19 @@
 
 		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
 		
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>42.7.2</version>
-		</dependency>
+		</dependency> -->
 		
 
 		<!-- MySQL -->
-		<!-- <dependency>
+		<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
-		</dependency> -->
+		</dependency>
 		
 
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-jdbc -->

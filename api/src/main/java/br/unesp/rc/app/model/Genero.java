@@ -49,6 +49,7 @@ public class Genero {
     private String criadoPor;
 
     @ManyToMany(mappedBy = "generos")
+    @JsonIgnore
     private List<Post> posts = new ArrayList<>();
 
     public Genero() {

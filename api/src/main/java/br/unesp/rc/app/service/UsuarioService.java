@@ -33,7 +33,6 @@ public class UsuarioService {
 
     public Usuario getUsuarioByToken(String token) {
         Usuario usuario = usuarioRepository.findByLogin(tokenService.validateToken(token.replace("Bearer ", "")));
-        System.out.println(usuario);
         return usuario;
     }
 

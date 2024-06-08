@@ -1,6 +1,5 @@
 package br.unesp.rc.app.model;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -65,7 +64,7 @@ public class Post {
     private float averageRating;
 
     @Column(name = "publish_date")
-    private Timestamp publishDate;
+    private LocalDate publishDate;
 
     @Column(name = "image")
     private String image;
@@ -90,7 +89,7 @@ public class Post {
     @Column(name = "criado_por")
     private String criadoPor;
 
-    @JsonIgnore
+    // @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "posts_generos", uniqueConstraints = @UniqueConstraint(columnNames = { "post_id",
             "genero_id" }, name = "unique_genero_post"), joinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id", table = "posts", unique = false), inverseJoinColumns = @JoinColumn(name = "genero_id", referencedColumnName = "id", table = "generos", unique = false))
@@ -118,5 +117,4 @@ public class Post {
     public void assignGenre(Genero genero) {
         generos.add(genero);
     }
-
 }

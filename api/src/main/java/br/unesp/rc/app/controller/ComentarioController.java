@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,7 @@ public class ComentarioController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @CrossOrigin("http://localhost:3000")
     @PostMapping("/avaliacao/{idPost}")
     public ResponseEntity<Avaliacao> createAvaliacao(@RequestHeader (name="Authorization") String token, @PathVariable Long idPost, @RequestBody Avaliacao avaliacao) {
         Usuario usuario = usuarioService.getUsuarioByToken(token);
@@ -37,6 +39,7 @@ public class ComentarioController {
         return new ResponseEntity<>(avaliacao, HttpStatus.CREATED);
     }
 
+    @CrossOrigin("http://localhost:3000")
     @PostMapping("/resposta/{idAvaliacao}")
     public ResponseEntity<Resposta> createResposta(@RequestHeader (name="Authorization") String token, @PathVariable Long idAvaliacao, @RequestBody Resposta resposta) {
         Usuario usuario = usuarioService.getUsuarioByToken(token);
@@ -50,6 +53,7 @@ public class ComentarioController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @CrossOrigin("http://localhost:3000")
     @GetMapping("/{idPost}/avaliacoes")
     public ResponseEntity<List<Avaliacao>> getAvaliacoesByPost(@PathVariable Long idPost) {
         List<Avaliacao> avaliacoes = comentarioService.getAvaliacoesByPost(idPost);
@@ -63,6 +67,7 @@ public class ComentarioController {
         return new ResponseEntity<>(avaliacoes, HttpStatus.OK);
     }
 
+    @CrossOrigin("http://localhost:3000")
     @GetMapping("/{idAvaliacao}/respostas")
     public ResponseEntity<List<Resposta>> getRespostasByAvaliacao(@PathVariable Long idAvaliacao) {
         List<Resposta> respostas = comentarioService.getRespostasByAvaliacao(idAvaliacao);

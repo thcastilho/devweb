@@ -111,6 +111,10 @@ public class Comentario {
         this.usuariosDislikes = usuariosDislikes;
     }
 
+    public String getCriadoPor() {
+        return criadoPor;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o)

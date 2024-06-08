@@ -1,5 +1,6 @@
 package br.unesp.rc.app.controller;
 
+import br.unesp.rc.app.dto.PostDTO;
 import br.unesp.rc.app.model.Post;
 import br.unesp.rc.app.model.Usuario;
 import br.unesp.rc.app.service.PostService;
@@ -31,6 +32,7 @@ public class PostController {
     private UsuarioService usuarioService;
 
     // Mostra post por Id
+    @CrossOrigin("http://localhost:3000")
     @GetMapping(value="/{id}", produces="application/json")
     public ResponseEntity<Post> getPostById(@PathVariable Long id) {
         Post post = postService.getPostById(id);
@@ -38,6 +40,7 @@ public class PostController {
     }
     
     // Mostra todos posts
+    @CrossOrigin("http://localhost:3000")
     @GetMapping(value="/", produces="application/json")
     public ResponseEntity<List<Post>> getAllPosts() {        
         List<Post> posts = postService.getAllPosts();
@@ -47,9 +50,9 @@ public class PostController {
     // Cria novo post
     @CrossOrigin("http://localhost:3000")
     @PostMapping(value = "/", produces = "application/json")
-    public ResponseEntity<Post> createPost(@RequestHeader (name="Authorization") String token, @RequestBody Post post) {
+    public ResponseEntity<Post> createPost(@RequestHeader (name="Authorization") String token, @RequestBody PostDTO postDTO) {
         Usuario usuario = usuarioService.getUsuarioByToken(token);
-        Post postSalvo = postService.createPost(usuario, post);
+        Post postSalvo = postService.createPost(usuario, postDTO);
         return new ResponseEntity<>(postSalvo, HttpStatus.CREATED);
     }
 

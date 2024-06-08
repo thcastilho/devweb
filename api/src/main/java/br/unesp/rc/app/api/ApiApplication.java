@@ -22,10 +22,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 public class ApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ApiApplication.class, args);
-		System.out.println("Aplicacao rodando");
-		System.out.println("version: " + SpringVersion.getVersion());
-		
+		SpringApplication.run(ApiApplication.class, args);		
 	}
 
 }

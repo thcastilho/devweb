@@ -38,7 +38,7 @@ public class GeneroController {
     }
     
     // Mostra todos generos
-    //@CrossOrigin("http://localhost:3000/")
+    @CrossOrigin("http://localhost:3000/")
     @GetMapping(value="/", produces="application/json")
     public ResponseEntity<List<Genero>> getAllGenero() {
         List<Genero> generos = generoService.getAllGeneros();
@@ -46,6 +46,7 @@ public class GeneroController {
     } 
 
     // Cria novo genero
+    @CrossOrigin("http://localhost:3000")
     @PostMapping(value = "/", produces = "application/json")
     public ResponseEntity<Genero> createGenero(@RequestHeader (name="Authorization") String token, @RequestBody Genero genero) {
         Usuario usuario = usuarioService.getUsuarioByToken(token);
