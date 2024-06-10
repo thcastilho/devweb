@@ -1,7 +1,9 @@
 package br.unesp.rc.app.controller;
 
 import br.unesp.rc.app.dto.UpdateUserDTO;
+import br.unesp.rc.app.model.Comentario;
 import br.unesp.rc.app.model.Usuario;
+import br.unesp.rc.app.repository.ComentarioRepository;
 import br.unesp.rc.app.service.UsuarioService;
 import jakarta.validation.Valid;
 
@@ -25,6 +27,9 @@ public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private ComentarioRepository comentarioRepository;
     
     // Mostra usuario por Id
     @GetMapping(value="/{id}", produces="application/json")
@@ -69,18 +74,22 @@ public class UsuarioController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @CrossOrigin("http://localhost:3000/")
     @PutMapping("/like/{idComentario}")
-    public ResponseEntity<Void> likeComment(@RequestHeader (name="Authorization") String token, @PathVariable Long idComentario) {
+    public ResponseEntity<Comentario> likeComment(@RequestHeader (name="Authorization") String token, @PathVariable Long idComentario) {
         Usuario usuario = usuarioService.getUsuarioByToken(token);
         usuarioService.likeComment(usuario, idComentario);
-        return new ResponseEntity<>(HttpStatus.OK);
+        Comentario comentarioSalvo = comentarioRepository.findById(idComentario).get();
+        return new ResponseEntity<>(comentarioSalvo, HttpStatus.OK);
     }
 
+    @CrossOrigin("http://localhost:3000/")
     @PutMapping("/dislike/{idComentario}")
-    public ResponseEntity<Void> dislikeComment(@RequestHeader (name="Authorization") String token, @PathVariable Long idComentario) {
+    public ResponseEntity<Comentario> dislikeComment(@RequestHeader (name="Authorization") String token, @PathVariable Long idComentario) {
         Usuario usuario = usuarioService.getUsuarioByToken(token);
         usuarioService.dislikeComment(usuario, idComentario);
-        return new ResponseEntity<>(HttpStatus.OK);
+        Comentario comentarioSalvo = comentarioRepository.findById(idComentario).get();
+        return new ResponseEntity<>(comentarioSalvo, HttpStatus.OK);
     }
 
     @PutMapping("/remove-like/{idComentario}")

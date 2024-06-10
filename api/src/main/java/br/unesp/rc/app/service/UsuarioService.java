@@ -87,7 +87,7 @@ public class UsuarioService {
         usuarioRepository.delete(usuarioSalvo);
     }
 
-    public void likeComment(Usuario usuario, Long idComentario) {     
+    public Comentario likeComment(Usuario usuario, Long idComentario) {     
         Comentario comentario = comentarioRepository.findById(idComentario)
             .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
 
@@ -101,13 +101,13 @@ public class UsuarioService {
             comentario.setNumLikes(numLikes);
             
             usuarioRepository.save(usuario);
-            comentarioRepository.save(comentario);
+            return comentarioRepository.save(comentario);
         } else {
             throw new IllegalArgumentException("Comment already liked");
         }
     }
 
-    public void dislikeComment(Usuario usuario, Long idComentario) {  
+    public Comentario dislikeComment(Usuario usuario, Long idComentario) {  
         Comentario comentario = comentarioRepository.findById(idComentario)
             .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
 
@@ -121,7 +121,7 @@ public class UsuarioService {
             comentario.setNumDislikes(numDislikes);
                 
             usuarioRepository.save(usuario);
-            comentarioRepository.save(comentario);
+            return comentarioRepository.save(comentario);
         } else {
             throw new IllegalArgumentException("Comment already disliked");
         }
