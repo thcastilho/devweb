@@ -92,19 +92,25 @@ public class UsuarioService {
             .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
 
         if(usuario.getDislikes().contains(comentario)) {
-            removeDislike(usuario, idComentario);
+            // removeDislike(usuario, idComentario);
+            usuario.getDislikes().remove(comentario);
+            int numDislikes = comentario.getNumDislikes() - 1;
+            comentario.setNumDislikes(numDislikes);
         }
         
         if(!usuario.getLikes().contains(comentario)) {
             usuario.assignLike(comentario);
             int numLikes = comentario.getNumLikes() + 1;
             comentario.setNumLikes(numLikes);
-            
-            usuarioRepository.save(usuario);
-            return comentarioRepository.save(comentario);
         } else {
-            throw new IllegalArgumentException("Comment already liked");
+            // throw new IllegalArgumentException("Comment already liked");
+            usuario.getLikes().remove(comentario);
+            int numLikes = comentario.getNumLikes() - 1;
+            comentario.setNumLikes(numLikes);
         }
+
+        usuarioRepository.save(usuario);
+        return comentarioRepository.save(comentario);
     }
 
     public Comentario dislikeComment(Usuario usuario, Long idComentario) {  
@@ -112,50 +118,56 @@ public class UsuarioService {
             .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
 
         if(usuario.getLikes().contains(comentario)) {
-            removeLike(usuario, idComentario);
+            // removeLike(usuario, idComentario);
+            usuario.getLikes().remove(comentario);
+            int numLikes = comentario.getNumLikes() - 1;
+            comentario.setNumLikes(numLikes);
         }
         
         if(!usuario.getDislikes().contains(comentario)) {
             usuario.assignDislike(comentario);
             int numDislikes = comentario.getNumDislikes() + 1;
             comentario.setNumDislikes(numDislikes);
-                
-            usuarioRepository.save(usuario);
-            return comentarioRepository.save(comentario);
         } else {
-            throw new IllegalArgumentException("Comment already disliked");
-        }
-    }
-
-    public void removeLike(Usuario usuario, Long idComentario) {
-        Comentario comentario = comentarioRepository.findById(idComentario)
-            .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
-
-        if(usuario.getLikes().contains(comentario)) {
-            usuario.getLikes().remove(comentario);
-            int numLikes = comentario.getNumLikes() - 1;
-            comentario.setNumLikes(numLikes);
-            
-            usuarioRepository.save(usuario);
-            comentarioRepository.save(comentario);
-        } else {
-            throw new IllegalArgumentException("Comment not liked");
-        }
-    }
-
-    public void removeDislike(Usuario usuario, Long idComentario) {        
-        Comentario comentario = comentarioRepository.findById(idComentario)
-            .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
-
-        if(usuario.getDislikes().contains(comentario)) {
+            // throw new IllegalArgumentException("Comment already disliked");
             usuario.getDislikes().remove(comentario);
             int numDislikes = comentario.getNumDislikes() - 1;
             comentario.setNumDislikes(numDislikes);
-            
-            usuarioRepository.save(usuario);
-            comentarioRepository.save(comentario);
-        } else {
-            throw new IllegalArgumentException("Comment not disliked");
         }
+
+        usuarioRepository.save(usuario);
+        return comentarioRepository.save(comentario);
     }
+
+    // public void removeLike(Usuario usuario, Long idComentario) {
+    //     Comentario comentario = comentarioRepository.findById(idComentario)
+    //         .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
+
+    //     if(usuario.getLikes().contains(comentario)) {
+    //         usuario.getLikes().remove(comentario);
+    //         int numLikes = comentario.getNumLikes() - 1;
+    //         comentario.setNumLikes(numLikes);
+            
+    //         usuarioRepository.save(usuario);
+    //         comentarioRepository.save(comentario);
+    //     } else {
+    //         throw new IllegalArgumentException("Comment not liked");
+    //     }
+    // }
+
+    // public void removeDislike(Usuario usuario, Long idComentario) {        
+    //     Comentario comentario = comentarioRepository.findById(idComentario)
+    //         .orElseThrow(() -> new IllegalArgumentException("Comment not found"));
+
+    //     if(usuario.getDislikes().contains(comentario)) {
+    //         usuario.getDislikes().remove(comentario);
+    //         int numDislikes = comentario.getNumDislikes() - 1;
+    //         comentario.setNumDislikes(numDislikes);
+            
+    //         usuarioRepository.save(usuario);
+    //         comentarioRepository.save(comentario);
+    //     } else {
+    //         throw new IllegalArgumentException("Comment not disliked");
+    //     }
+    // }
 }

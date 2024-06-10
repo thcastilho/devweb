@@ -92,17 +92,17 @@ public class UsuarioController {
         return new ResponseEntity<>(comentarioSalvo, HttpStatus.OK);
     }
 
-    @PutMapping("/remove-like/{idComentario}")
-    public ResponseEntity<Void> removeLike(@RequestHeader (name="Authorization") String token, @PathVariable Long idComentario) {
-        Usuario usuario = usuarioService.getUsuarioByToken(token);
-        usuarioService.removeLike(usuario, idComentario);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+    // @PutMapping("/remove-like/{idComentario}")
+    // public ResponseEntity<Void> removeLike(@RequestHeader (name="Authorization") String token, @PathVariable Long idComentario) {
+    //     Usuario usuario = usuarioService.getUsuarioByToken(token);
+    //     usuarioService.removeLike(usuario, idComentario);
+    //     return new ResponseEntity<>(HttpStatus.OK);
+    // }
 
-    @PutMapping("/remove-dislike/{idComentario}")
-    public ResponseEntity<Void> removeDislike(@RequestHeader (name="Authorization") String token, @PathVariable Long idComentario) {
-        Usuario usuario = usuarioService.getUsuarioByToken(token);
-        usuarioService.removeDislike(usuario, idComentario);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+    // @PutMapping("/remove-dislike/{idComentario}")
+    // public ResponseEntity<Void> removeDislike(@RequestHeader (name="Authorization") String token, @PathVariable Long idComentario) {
+    //     Usuario usuario = usuarioService.getUsuarioByToken(token);
+    //     usuarioService.removeDislike(usuario, idComentario);
+    //     return new ResponseEntity<>(HttpStatus.OK);
+    // }
 }
