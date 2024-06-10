@@ -1,6 +1,7 @@
 package br.unesp.rc.app.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -28,6 +29,10 @@ public class PostService {
                 .orElseThrow(() -> new IllegalArgumentException("Post not found"));
         
         return post;
+    }
+
+    public Optional<Post> getPostByName(String name) {
+        return postRepository.findFirstByNameContainingIgnoreCase(name);
     }
 
     public List<Post> getAllPosts() {
