@@ -3,6 +3,7 @@ package br.unesp.rc.app.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import br.unesp.rc.app.model.Genero;
@@ -28,8 +29,12 @@ public class GeneroService {
     }
 
     public Genero createGenero(Usuario usuario, Genero genero) {
+        if(this.generoRepository.findByName(genero.getName()) != null) {
+            System.out.println("Gender already exists!\n");
+            return null;
+        }
+        
         genero.setUsuarioGenero(usuario);
-
         return generoRepository.save(genero);
     }
 

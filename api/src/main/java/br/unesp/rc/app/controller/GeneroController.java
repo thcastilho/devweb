@@ -46,12 +46,14 @@ public class GeneroController {
     } 
 
     // Cria novo genero
-    @CrossOrigin("http://localhost:3000")
+    @CrossOrigin("http://localhost:3000/")
     @PostMapping(value = "/", produces = "application/json")
     public ResponseEntity<Genero> createGenero(@RequestHeader (name="Authorization") String token, @RequestBody Genero genero) {
         Usuario usuario = usuarioService.getUsuarioByToken(token);
         Genero generoSalvo = generoService.createGenero(usuario, genero);
-        return new ResponseEntity<>(generoSalvo, HttpStatus.CREATED);
+        if (generoSalvo == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        } else return new ResponseEntity<>(generoSalvo, HttpStatus.CREATED);
     }
 
     // Atualiza genero
