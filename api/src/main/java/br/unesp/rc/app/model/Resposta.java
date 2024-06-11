@@ -1,6 +1,7 @@
 package br.unesp.rc.app.model;
 
-import java.sql.Timestamp;
+
+import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -17,7 +18,7 @@ import lombok.Setter;
 public class Resposta extends Comentario {
     public Resposta(){}
 
-    public Resposta(Long id, String text, int numLikes, Timestamp publishDate) {
+    public Resposta(Long id, String text, int numLikes, LocalDate publishDate) {
         super.setId(id);
         super.setText(text);
         super.setNumLikes(numLikes);

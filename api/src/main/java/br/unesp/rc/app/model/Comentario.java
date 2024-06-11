@@ -1,6 +1,6 @@
 package br.unesp.rc.app.model;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
@@ -10,6 +10,7 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -37,7 +38,9 @@ public class Comentario {
     private String text;
     private int numLikes;
     private int numDislikes;
-    private Timestamp publishDate;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    private LocalDate publishDate;
 
     @ManyToMany(mappedBy = "likes")
     @JsonIgnore
@@ -87,11 +90,11 @@ public class Comentario {
         this.numDislikes = numDislikes;
     }
 
-    public Timestamp getPublishDate() {
+    public LocalDate getPublishDate() {
         return this.publishDate;
     }
 
-    public void setPublishDate(Timestamp publishDate) {
+    public void setPublishDate(LocalDate publishDate) {
         this.publishDate = publishDate;
     }
 

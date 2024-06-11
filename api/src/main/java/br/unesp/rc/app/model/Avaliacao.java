@@ -1,6 +1,6 @@
 package br.unesp.rc.app.model;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class Avaliacao extends Comentario {
 
     public Avaliacao() {}
 
-    public Avaliacao(Long id, String text, int numLikes, Timestamp publishDate, int numStars) {
+    public Avaliacao(Long id, String text, int numLikes, LocalDate publishDate, int numStars) {
         super.setId(id);
         super.setText(text);
         super.setPublishDate(publishDate);
