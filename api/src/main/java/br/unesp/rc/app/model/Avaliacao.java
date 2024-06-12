@@ -21,11 +21,11 @@ import lombok.Setter;
 @Setter
 public class Avaliacao extends Comentario {
     @Column(name = "num_stars")
-    private int numStars;
+    private float numStars;
 
     public Avaliacao() {}
 
-    public Avaliacao(Long id, String text, int numLikes, LocalDate publishDate, int numStars) {
+    public Avaliacao(Long id, String text, int numLikes, String publishDate, float numStars) {
         super.setId(id);
         super.setText(text);
         super.setPublishDate(publishDate);

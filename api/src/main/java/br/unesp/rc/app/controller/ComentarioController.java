@@ -15,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.unesp.rc.app.dto.CreateAvaliacaoDTO;
+import br.unesp.rc.app.dto.CreateRespostaDTO;
 import br.unesp.rc.app.model.Avaliacao;
 import br.unesp.rc.app.model.Resposta;
 import br.unesp.rc.app.model.Usuario;
 import br.unesp.rc.app.service.ComentarioService;
 import br.unesp.rc.app.service.UsuarioService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/comentarios")
@@ -31,20 +34,21 @@ public class ComentarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    @CrossOrigin("http://localhost:3000")
+    @CrossOrigin("http://localhost:3000/")
     @PostMapping("/avaliacao/{idPost}")
-    public ResponseEntity<Avaliacao> createAvaliacao(@RequestHeader (name="Authorization") String token, @PathVariable Long idPost, @RequestBody Avaliacao avaliacao) {
+    public ResponseEntity<Avaliacao> createAvaliacao(@RequestHeader (name="Authorization") String token, @PathVariable Long idPost, @RequestBody @Valid CreateAvaliacaoDTO avaliacao) {
+        System.out.println("chegou aki");
         Usuario usuario = usuarioService.getUsuarioByToken(token);
-        comentarioService.createAvaliacao(idPost, usuario, avaliacao);
-        return new ResponseEntity<>(avaliacao, HttpStatus.CREATED);
+        Avaliacao novaAvaliacao = comentarioService.createAvaliacao(idPost, usuario, avaliacao);
+        return new ResponseEntity<>(novaAvaliacao, HttpStatus.CREATED);
     }
 
     @CrossOrigin("http://localhost:3000")
     @PostMapping("/resposta/{idAvaliacao}")
-    public ResponseEntity<Resposta> createResposta(@RequestHeader (name="Authorization") String token, @PathVariable Long idAvaliacao, @RequestBody Resposta resposta) {
+    public ResponseEntity<Resposta> createResposta(@RequestHeader (name="Authorization") String token, @PathVariable Long idAvaliacao, @RequestBody @Valid CreateRespostaDTO resposta) {
         Usuario usuario = usuarioService.getUsuarioByToken(token);
-        comentarioService.createResposta(idAvaliacao, usuario, resposta);
-        return new ResponseEntity<>(resposta, HttpStatus.CREATED);
+        Resposta novaResposta = comentarioService.createResposta(idAvaliacao, usuario, resposta);
+        return new ResponseEntity<>(novaResposta, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

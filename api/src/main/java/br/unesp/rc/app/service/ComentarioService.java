@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.unesp.rc.app.dto.CreateAvaliacaoDTO;
+import br.unesp.rc.app.dto.CreateRespostaDTO;
 import br.unesp.rc.app.model.Avaliacao;
 import br.unesp.rc.app.model.Comentario;
 import br.unesp.rc.app.model.Post;
@@ -22,31 +24,39 @@ public class ComentarioService {
     @Autowired
     private PostRepository postRepository;
 
-    public Avaliacao createAvaliacao(Long idPost, Usuario usuario, Avaliacao avaliacao) {
+    public Avaliacao createAvaliacao(Long idPost, Usuario usuario, CreateAvaliacaoDTO avaliacao) {
         Post post = postRepository.findById(idPost)
             .orElseThrow(() -> new RuntimeException("Post not found"));
+        
 
-        avaliacao.setAvaliacaoPost(post);
-        avaliacao.setUsuarioAvaliacao(usuario);
-        comentarioRepository.save(avaliacao);
+        Avaliacao novaAvaliacao = new Avaliacao();
+        novaAvaliacao.setText(avaliacao.text());
+        novaAvaliacao.setNumStars(avaliacao.numStars());
+        novaAvaliacao.setPublishDate(avaliacao.publishDate());
+        novaAvaliacao.setAvaliacaoPost(post);
+        novaAvaliacao.setUsuarioAvaliacao(usuario);
+        comentarioRepository.save(novaAvaliacao);
 
         List<Avaliacao> avaliacoes = post.getAvaliacoes();
         double media = avaliacoes.stream().mapToDouble(Avaliacao::getNumStars).average().orElse(0.0);
         post.setAverageRating((float) media);
         postRepository.save(post);
 
-        return avaliacao;
+        return novaAvaliacao;
     }
 
-    public Resposta createResposta(Long idAvaliacao, Usuario usuario, Resposta resposta) {
+    public Resposta createResposta(Long idAvaliacao, Usuario usuario, CreateRespostaDTO resposta) {
         Comentario avaliacao = comentarioRepository.findById(idAvaliacao)
             .orElseThrow(() -> new RuntimeException("Review not found"));
-    
-        resposta.setAvaliacaoResposta((Avaliacao)avaliacao);
-        resposta.setUsuarioResposta(usuario);
-        comentarioRepository.save(resposta);
+
+        Resposta novaResposta = new Resposta();
+        novaResposta.setText(resposta.text());
+        novaResposta.setPublishDate(resposta.publishDate());
+        novaResposta.setAvaliacaoResposta((Avaliacao)avaliacao);
+        novaResposta.setUsuarioResposta(usuario);
+        comentarioRepository.save(novaResposta);
         
-        return resposta;
+        return novaResposta;
     }
 
     public void deleteById(Long id) {

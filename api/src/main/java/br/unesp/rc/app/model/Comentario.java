@@ -40,7 +40,7 @@ public class Comentario {
     private int numDislikes;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private LocalDate publishDate;
+    private String publishDate;
 
     @ManyToMany(mappedBy = "likes")
     @JsonIgnore
@@ -90,11 +90,11 @@ public class Comentario {
         this.numDislikes = numDislikes;
     }
 
-    public LocalDate getPublishDate() {
+    public String getPublishDate() {
         return this.publishDate;
     }
 
-    public void setPublishDate(LocalDate publishDate) {
+    public void setPublishDate(String publishDate) {
         this.publishDate = publishDate;
     }
 

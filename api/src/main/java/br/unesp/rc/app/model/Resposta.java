@@ -18,7 +18,7 @@ import lombok.Setter;
 public class Resposta extends Comentario {
     public Resposta(){}
 
-    public Resposta(Long id, String text, int numLikes, LocalDate publishDate) {
+    public Resposta(Long id, String text, int numLikes, String publishDate) {
         super.setId(id);
         super.setText(text);
         super.setNumLikes(numLikes);
