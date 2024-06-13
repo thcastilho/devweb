@@ -31,9 +31,13 @@ public class PostService {
         return post;
     }
 
-    public Optional<Post> getPostByName(String name) {
-        return postRepository.findFirstByNameContainingIgnoreCase(name);
-    }
+    // public Optional<Post> getPostByName(String name) {
+    //     return postRepository.findFirstByNameContainingIgnoreCase(name);
+    // }
+
+    public List<Post> searchPostsByName(String name) {
+        return postRepository.findByNameContainingIgnoreCase(name);
+    }    
 
     public List<Post> getAllPosts() {
         List<Post> posts = (List<Post>) postRepository.findAll();

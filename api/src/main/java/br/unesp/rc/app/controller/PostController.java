@@ -42,16 +42,28 @@ public class PostController {
         return new ResponseEntity<>(post, HttpStatus.OK);
     }
 
-    @CrossOrigin("http://localhost:3000")
-    @GetMapping
-    public ResponseEntity<Post> getPostByName(@RequestParam(required = false) String search) {
+    // @CrossOrigin("http://localhost:3000")
+    // @GetMapping
+    // public ResponseEntity<Post> getPostByName(@RequestParam(required = false) String search) {
+    //     if (search == null || search.isEmpty()) {
+    //         return ResponseEntity.badRequest().build();
+    //     } else {
+    //         Optional<Post> post = postService.getPostByName(search);
+    //         return post.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    //     }
+    // }
+
+    @CrossOrigin("http://localhost:3000/")
+    @GetMapping(value="/search", produces="application/json")
+    public ResponseEntity<List<Post>> searchPostsByName(@RequestParam(required = false) String search) {
         if (search == null || search.isEmpty()) {
             return ResponseEntity.badRequest().build();
         } else {
-            Optional<Post> post = postService.getPostByName(search);
-            return post.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+            List<Post> posts = postService.searchPostsByName(search);
+            return ResponseEntity.ok(posts);
         }
     }
+
     
     // Mostra todos posts
     @CrossOrigin("http://localhost:3000")
