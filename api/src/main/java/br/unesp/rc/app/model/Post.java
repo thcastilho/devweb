@@ -90,9 +90,13 @@ public class Post {
     private String criadoPor;
 
     // @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "posts_generos", uniqueConstraints = @UniqueConstraint(columnNames = { "post_id",
-            "genero_id" }, name = "unique_genero_post"), joinColumns = @JoinColumn(name = "post_id", referencedColumnName = "id", table = "posts", unique = false), inverseJoinColumns = @JoinColumn(name = "genero_id", referencedColumnName = "id", table = "generos", unique = false))
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JoinTable(name = "posts_generos", 
+                uniqueConstraints = @UniqueConstraint(columnNames = { "post_id", "genero_id" }, name = "unique_genero_post"), 
+                joinColumns = @JoinColumn(name = "post_id", 
+                referencedColumnName = "id", table = "posts", unique = false), 
+                inverseJoinColumns = @JoinColumn(name = "genero_id", 
+                referencedColumnName = "id", table = "generos", unique = false))
     private List<Genero> generos = new ArrayList<Genero>();
 
     public enum Categoria {
