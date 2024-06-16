@@ -89,6 +89,7 @@ public class PostController {
     }
 
     // Deleta post
+    @CrossOrigin("http://localhost:3000/")
     @DeleteMapping(value = "/{id}", produces = "application/text")
     public ResponseEntity<Void> deletePost(@PathVariable Long id) {
         postService.deletePost(id);

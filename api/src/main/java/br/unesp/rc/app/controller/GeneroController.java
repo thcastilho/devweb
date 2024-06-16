@@ -64,6 +64,7 @@ public class GeneroController {
     }
     
     // Deleta genero
+    @CrossOrigin("http://localhost:3000/")
     @DeleteMapping(value = "/{id}", produces = "application/text")
     public ResponseEntity<Void> deleteGenero(@PathVariable("id") Long id) {
         generoService.deleteGenero(id);
