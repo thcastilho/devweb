@@ -7,7 +7,6 @@ import br.unesp.rc.app.service.PostService;
 import br.unesp.rc.app.service.UsuarioService;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

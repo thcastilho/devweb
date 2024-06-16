@@ -4,6 +4,7 @@ import br.unesp.rc.app.dto.UpdateUserDTO;
 import br.unesp.rc.app.model.Comentario;
 import br.unesp.rc.app.model.Usuario;
 import br.unesp.rc.app.repository.ComentarioRepository;
+import br.unesp.rc.app.repository.UsuarioRepository;
 import br.unesp.rc.app.service.UsuarioService;
 import jakarta.validation.Valid;
 
@@ -29,12 +30,25 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
     private ComentarioRepository comentarioRepository;
     
     // Mostra usuario por Id
+    @CrossOrigin("http://localhost:3000/")
     @GetMapping(value="/{id}", produces="application/json")
     public ResponseEntity<Usuario> getUsuarioById(@PathVariable Long id) {
         Usuario usuario = usuarioService.getUsuarioById(id);
+        return new ResponseEntity<>(usuario, HttpStatus.OK);
+    }
+
+    // Mostra usuario por login
+    @CrossOrigin("http://localhost:3000/")
+    @GetMapping(value="/login/{login}", produces="application/json")
+    public ResponseEntity<Usuario> getUsuarioByLogin(@PathVariable String login) {
+        Usuario usuario = usuarioRepository.findByLogin(login);
+        System.out.println(usuario);
         return new ResponseEntity<>(usuario, HttpStatus.OK);
     }
 

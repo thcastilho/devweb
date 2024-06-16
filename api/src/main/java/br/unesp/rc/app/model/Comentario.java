@@ -1,7 +1,5 @@
 package br.unesp.rc.app.model;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -10,7 +8,6 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -39,9 +36,6 @@ public class Comentario {
     private int numLikes;
     private int numDislikes;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    private String publishDate;
-
     @ManyToMany(mappedBy = "likes")
     @JsonIgnore
     private Set<Usuario> usuariosLikes = new HashSet<>();
@@ -52,11 +46,19 @@ public class Comentario {
 
     @CreatedDate
     @Column(name = "data_criacao")
-    private LocalDateTime dataCriacao;
+    private String dataCriacao;
 
     @CreatedBy
     @Column(name = "criado_por")
     private String criadoPor;
+
+    public String getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(String dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
 
     public Long getId() {
         return this.id;
@@ -88,14 +90,6 @@ public class Comentario {
 
     public void setNumDislikes(int numDislikes) {
         this.numDislikes = numDislikes;
-    }
-
-    public String getPublishDate() {
-        return this.publishDate;
-    }
-
-    public void setPublishDate(String publishDate) {
-        this.publishDate = publishDate;
     }
 
     public Set<Usuario> getUsuariosLikes() {

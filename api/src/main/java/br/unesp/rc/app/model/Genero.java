@@ -12,7 +12,6 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +41,7 @@ public class Genero {
 
     @CreatedDate
     @Column(name = "data_criacao")
-    private LocalDateTime dataCriacao;
+    private String dataCriacao;
 
     @CreatedBy
     @Column(name = "criado_por")

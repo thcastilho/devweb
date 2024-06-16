@@ -1,6 +1,5 @@
 package br.unesp.rc.app.model;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,10 +24,10 @@ public class Avaliacao extends Comentario {
 
     public Avaliacao() {}
 
-    public Avaliacao(Long id, String text, int numLikes, String publishDate, float numStars) {
+    public Avaliacao(Long id, String text, int numLikes, String dataCriacao, float numStars) {
         super.setId(id);
         super.setText(text);
-        super.setPublishDate(publishDate);
+        super.setDataCriacao(dataCriacao);
         this.numStars = numStars;
     }
 

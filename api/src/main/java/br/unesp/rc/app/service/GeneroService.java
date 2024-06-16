@@ -3,7 +3,6 @@ package br.unesp.rc.app.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import br.unesp.rc.app.model.Genero;

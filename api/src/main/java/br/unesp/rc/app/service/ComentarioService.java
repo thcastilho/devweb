@@ -32,7 +32,6 @@ public class ComentarioService {
         Avaliacao novaAvaliacao = new Avaliacao();
         novaAvaliacao.setText(avaliacao.text());
         novaAvaliacao.setNumStars(avaliacao.numStars());
-        novaAvaliacao.setPublishDate(avaliacao.publishDate());
         novaAvaliacao.setAvaliacaoPost(post);
         novaAvaliacao.setUsuarioAvaliacao(usuario);
         comentarioRepository.save(novaAvaliacao);
@@ -51,7 +50,6 @@ public class ComentarioService {
 
         Resposta novaResposta = new Resposta();
         novaResposta.setText(resposta.text());
-        novaResposta.setPublishDate(resposta.publishDate());
         novaResposta.setAvaliacaoResposta((Avaliacao)avaliacao);
         novaResposta.setUsuarioResposta(usuario);
         comentarioRepository.save(novaResposta);

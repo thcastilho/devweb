@@ -1,6 +1,5 @@
 package br.unesp.rc.app.model;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -60,9 +59,6 @@ public class Usuario implements UserDetails{
 
     private UserRole role;
 
-    // @Column(name = "foto_perfil", nullable = true, length = 30)
-    // private String fotoPerfil;
-
 	@OneToMany(mappedBy = "usuarioResposta", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Resposta> respostas = new ArrayList<>();
 
@@ -70,6 +66,7 @@ public class Usuario implements UserDetails{
     private List<Post> posts = new ArrayList<>();
 
     @OneToMany(mappedBy = "usuarioAvaliacao", orphanRemoval = true, cascade = CascadeType.ALL)
+    // @JsonIgnore
     private List<Avaliacao> avaliacoes = new ArrayList<>();
     
     @OneToMany(mappedBy = "usuarioGenero", orphanRemoval = true, cascade = CascadeType.ALL)
@@ -131,7 +128,7 @@ public class Usuario implements UserDetails{
 
     @CreatedDate
     @Column(name = "data_criacao")
-    private LocalDateTime dataCriacao;
+    private String dataCriacao;
 
 
     public Usuario(String login, String email, Sexo sexo, String senha, UserRole role){

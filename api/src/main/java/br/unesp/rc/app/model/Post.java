@@ -1,7 +1,6 @@
 package br.unesp.rc.app.model;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -54,12 +53,6 @@ public class Post {
     @Column(name = "artist")
     private String artist;
 
-    @Column(name = "release_date")
-    private LocalDate releaseDate;
-
-    @Column(name = "description")
-    private String description;
-
     @Column(name = "average_rating")
     private float averageRating;
 
@@ -83,7 +76,7 @@ public class Post {
 
     @CreatedDate
     @Column(name = "data_criacao")
-    private LocalDateTime dataCriacao;
+    private String dataCriacao;
 
     @CreatedBy
     @Column(name = "criado_por")

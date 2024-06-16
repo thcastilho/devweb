@@ -1,8 +1,5 @@
 package br.unesp.rc.app.model;
 
-
-import java.time.LocalDate;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.DiscriminatorValue;
@@ -18,11 +15,11 @@ import lombok.Setter;
 public class Resposta extends Comentario {
     public Resposta(){}
 
-    public Resposta(Long id, String text, int numLikes, String publishDate) {
+    public Resposta(Long id, String text, int numLikes, String dataCriacao) {
         super.setId(id);
         super.setText(text);
         super.setNumLikes(numLikes);
-        super.setPublishDate(publishDate);
+        super.setDataCriacao(dataCriacao);
     }
 
     @org.hibernate.annotations.ForeignKey(name = "usuario_resposta_id")    
