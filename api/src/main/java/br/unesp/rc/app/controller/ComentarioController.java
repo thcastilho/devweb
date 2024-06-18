@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
+// import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +37,6 @@ public class ComentarioController {
     @CrossOrigin("http://localhost:3000/")
     @PostMapping("/avaliacao/{idPost}")
     public ResponseEntity<Avaliacao> createAvaliacao(@RequestHeader (name="Authorization") String token, @PathVariable Long idPost, @RequestBody @Valid CreateAvaliacaoDTO avaliacao) {
-        System.out.println("chegou aki");
         Usuario usuario = usuarioService.getUsuarioByToken(token);
         Avaliacao novaAvaliacao = comentarioService.createAvaliacao(idPost, usuario, avaliacao);
         return new ResponseEntity<>(novaAvaliacao, HttpStatus.CREATED);
@@ -51,11 +50,11 @@ public class ComentarioController {
         return new ResponseEntity<>(novaResposta, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteComentario(@PathVariable Long id) {
-        comentarioService.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+    // @DeleteMapping("/{id}")
+    // public ResponseEntity<Void> deleteComentario(@PathVariable Long id) {
+    //     comentarioService.deleteById(id);
+    //     return new ResponseEntity<>(HttpStatus.OK);
+    // }
 
     @CrossOrigin("http://localhost:3000")
     @GetMapping("/{idPost}/avaliacoes")
@@ -64,12 +63,12 @@ public class ComentarioController {
         return new ResponseEntity<>(avaliacoes, HttpStatus.OK);
     }
 
-    @GetMapping("/avaliacoes")
-    public ResponseEntity<List<Avaliacao>> getAvaliacoesByUser(@RequestHeader (name="Authorization") String token) {
-        Usuario usuario = usuarioService.getUsuarioByToken(token);
-        List<Avaliacao> avaliacoes = comentarioService.getAvaliacoesByUser(usuario);
-        return new ResponseEntity<>(avaliacoes, HttpStatus.OK);
-    }
+    // @GetMapping("/avaliacoes")
+    // public ResponseEntity<List<Avaliacao>> getAvaliacoesByUser(@RequestHeader (name="Authorization") String token) {
+    //     Usuario usuario = usuarioService.getUsuarioByToken(token);
+    //     List<Avaliacao> avaliacoes = comentarioService.getAvaliacoesByUser(usuario);
+    //     return new ResponseEntity<>(avaliacoes, HttpStatus.OK);
+    // }
 
     @CrossOrigin("http://localhost:3000")
     @GetMapping("/{idAvaliacao}/respostas")
@@ -78,10 +77,10 @@ public class ComentarioController {
         return new ResponseEntity<>(respostas, HttpStatus.OK);
     }
 
-    @GetMapping("/respostas/{idUsuario}")
-    public ResponseEntity<List<Resposta>> getRespostasByUser(@RequestHeader (name="Authorization") String token) {
-        Usuario usuario = usuarioService.getUsuarioByToken(token);
-        List<Resposta> respostas = comentarioService.getRespostasByUser(usuario);
-        return new ResponseEntity<>(respostas, HttpStatus.OK);
-    }
+    // @GetMapping("/respostas/{idUsuario}")
+    // public ResponseEntity<List<Resposta>> getRespostasByUser(@RequestHeader (name="Authorization") String token) {
+    //     Usuario usuario = usuarioService.getUsuarioByToken(token);
+    //     List<Resposta> respostas = comentarioService.getRespostasByUser(usuario);
+    //     return new ResponseEntity<>(respostas, HttpStatus.OK);
+    // }
 }

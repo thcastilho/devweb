@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+// import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,12 +30,12 @@ public class GeneroController {
     @Autowired
     private UsuarioService usuarioService;
     
-    // Mostra genero por Id
-    @GetMapping(value="/{id}", produces="application/json")
-    public ResponseEntity<Genero> getGeneroById(@PathVariable("id") Long id) {
-        Genero genero = generoService.getGeneroById(id);
-        return new ResponseEntity<>(genero, HttpStatus.OK);
-    }
+    // // Mostra genero por Id
+    // @GetMapping(value="/{id}", produces="application/json")
+    // public ResponseEntity<Genero> getGeneroById(@PathVariable("id") Long id) {
+    //     Genero genero = generoService.getGeneroById(id);
+    //     return new ResponseEntity<>(genero, HttpStatus.OK);
+    // }
     
     // Mostra todos generos
     @CrossOrigin("http://localhost:3000/")
@@ -56,12 +56,12 @@ public class GeneroController {
         } else return new ResponseEntity<>(generoSalvo, HttpStatus.CREATED);
     }
 
-    // Atualiza genero
-    @PutMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<Genero> updateGenero(@PathVariable Long id, @RequestBody Genero genero) {
-        Genero generoSalvo = generoService.updateGenero(id, genero);
-        return new ResponseEntity<>(generoSalvo, HttpStatus.OK);
-    }
+    // // Atualiza genero
+    // @PutMapping(value = "/{id}", produces = "application/json")
+    // public ResponseEntity<Genero> updateGenero(@PathVariable Long id, @RequestBody Genero genero) {
+    //     Genero generoSalvo = generoService.updateGenero(id, genero);
+    //     return new ResponseEntity<>(generoSalvo, HttpStatus.OK);
+    // }
     
     // Deleta genero
     @CrossOrigin("http://localhost:3000/")

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+// import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,17 +40,6 @@ public class PostController {
         Post post = postService.getPostById(id);
         return new ResponseEntity<>(post, HttpStatus.OK);
     }
-
-    // @CrossOrigin("http://localhost:3000")
-    // @GetMapping
-    // public ResponseEntity<Post> getPostByName(@RequestParam(required = false) String search) {
-    //     if (search == null || search.isEmpty()) {
-    //         return ResponseEntity.badRequest().build();
-    //     } else {
-    //         Optional<Post> post = postService.getPostByName(search);
-    //         return post.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    //     }
-    // }
 
     @CrossOrigin("http://localhost:3000/")
     @GetMapping(value="/search", produces="application/json")
@@ -81,12 +70,12 @@ public class PostController {
         return new ResponseEntity<>(postSalvo, HttpStatus.CREATED);
     }
 
-    // Atualiza post
-    @PutMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post post) {
-        Post postSalvo = postService.updatePost(id, post);
-        return new ResponseEntity<>(postSalvo, HttpStatus.OK);
-    }
+    // // Atualiza post
+    // @PutMapping(value = "/{id}", produces = "application/json")
+    // public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post post) {
+    //     Post postSalvo = postService.updatePost(id, post);
+    //     return new ResponseEntity<>(postSalvo, HttpStatus.OK);
+    // }
 
     // Deleta post
     @CrossOrigin("http://localhost:3000/")
@@ -96,17 +85,17 @@ public class PostController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    // Atribui um post a um gênero
-    @PutMapping("/{idPost}/genero/{idGenero}")
-    public ResponseEntity<Post> assignPostToGenre(@PathVariable Long idPost, @PathVariable Long idGenero) {
-        Post post = postService.assignPostToGenre(idPost, idGenero);
-        return new ResponseEntity<>(post, HttpStatus.OK);
-    }
+    // // Atribui um post a um gênero
+    // @PutMapping("/{idPost}/genero/{idGenero}")
+    // public ResponseEntity<Post> assignPostToGenre(@PathVariable Long idPost, @PathVariable Long idGenero) {
+    //     Post post = postService.assignPostToGenre(idPost, idGenero);
+    //     return new ResponseEntity<>(post, HttpStatus.OK);
+    // }
 
-    // Calcula a média das avaliações do post
-    @PutMapping("/average-rating/{id}")
-    public ResponseEntity<Void> calcAverageRating(@PathVariable Long id) {
-        postService.calcAverageRating(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+    // // Calcula a média das avaliações do post
+    // @PutMapping("/average-rating/{id}")
+    // public ResponseEntity<Void> calcAverageRating(@PathVariable Long id) {
+    //     postService.calcAverageRating(id);
+    //     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    // }
 }

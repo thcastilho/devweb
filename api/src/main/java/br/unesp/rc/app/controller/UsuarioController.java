@@ -8,7 +8,7 @@ import br.unesp.rc.app.repository.UsuarioRepository;
 import br.unesp.rc.app.service.UsuarioService;
 import jakarta.validation.Valid;
 
-import java.util.List;
+// import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +48,6 @@ public class UsuarioController {
     @GetMapping(value="/login/{login}", produces="application/json")
     public ResponseEntity<Usuario> getUsuarioByLogin(@PathVariable String login) {
         Usuario usuario = usuarioRepository.findByLogin(login);
-        System.out.println(usuario);
         return new ResponseEntity<>(usuario, HttpStatus.OK);
     }
 
@@ -60,12 +59,12 @@ public class UsuarioController {
         return new ResponseEntity<>(usuario, HttpStatus.OK);
     }
     
-    // Mostra todos usuarios
-    @GetMapping(value="/", produces="application/json")
-    public ResponseEntity<List<Usuario>> getAllUsuarios() {
-        List<Usuario> usuarios = usuarioService.getAllUsuarios();
-        return new ResponseEntity<>(usuarios, HttpStatus.OK);
-    } 
+    // // Mostra todos usuarios
+    // @GetMapping(value="/", produces="application/json")
+    // public ResponseEntity<List<Usuario>> getAllUsuarios() {
+    //     List<Usuario> usuarios = usuarioService.getAllUsuarios();
+    //     return new ResponseEntity<>(usuarios, HttpStatus.OK);
+    // } 
 
     // Atualiza usuario
     @CrossOrigin("http://localhost:3000/")
