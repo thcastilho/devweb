@@ -2,41 +2,41 @@
 class Usuario {
   - Long id
   - String email
-  - String password
-  - String userName
+  - String senha
+  - String login
   - String fotoPerfil
+  - Sexo sexo
+  - UserRole role
+  - String dataCriacao
   + Usuario()
-  + fazerPost()
-  + fazerAvaliacao()
-  + darResposta()
-  + criarGenero()
+  + assignLike()
+  + assignDislike()
 }
 
 class Post {
   - Long id
   - String name
   - String artist
-  - LocalDate releaseDate
-  - String description
-  - Float avgRating
-  - Timestamp publishDate
+  - LocalDate publishDate
+  - float avgRating
+  - String dataCriacao
+  - String criadoPor
   - String image
-  - Duration duracao
   - Categoria categoria
   + Post()
-  + listarPosts()
-  + calcAvgRating()
+  + assignGenre()
 }
 
 class Genero {
   - Long id
   - String name
+  - String criadoPor
+  - String dataCriacao
   + Genero()
-  + listarGeneros()
 }
 
 class Avaliacao {
-  - int numStars
+  - float numStars
   + Avaliacao()
 }
 
@@ -48,9 +48,10 @@ class Comentario {
   - Long id
   - String text
   - int numLikes
-  - Timestamp publishDate
+  - int numDislikes
+  - String dataCriacao
+  - String criadoPor
   + Comentario()
-  + calcTotalLikes()
 }
 
 enum Categoria {
@@ -58,17 +59,30 @@ enum Categoria {
   ALBUM
 }
 
+enum Sexo {
+  HOMEM
+  MULHER
+  NAO_INFORMADO
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
 Usuario "1" <-left- "*" Post : Publica
 Usuario "1" <-up- "*" Avaliacao : Realiza
-Usuario "1" <-up- "0..*" Resposta : Comenta
+Usuario "1" <-up- "*" Resposta : Comenta
 Usuario "1" <-- "*" Genero : Cria
+Usuario "*" <-- "*" Post : Curte
+Usuario "*" <-- "*" Post : Descurte
 
-Post "1" -up- "*" Avaliacao : Recebe
+Post "1" *-up- "*" Avaliacao : Recebe
 Post "*" <--> "*" Genero : Contém
 
 Comentario <|-down- Avaliacao
 Comentario <|-down- Resposta
 
-Avaliacao "1" *-right- "0..*" Resposta : Possui
+Avaliacao "1" *-right- "*" Resposta : Possui
 
 @enduml
